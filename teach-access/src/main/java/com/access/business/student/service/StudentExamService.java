@@ -92,8 +92,6 @@ public class StudentExamService {
         //根据当前用户的id来查询所在班级
         Student student = studentMapper.selectById(id);
 
-
-
         String classesId = student.getClassesId();
 
         //说明该用户还没有班级
