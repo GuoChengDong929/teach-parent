@@ -1,0 +1,62 @@
+server:
+  port: 56700
+
+spring:
+
+  application:
+    name: teach-access
+
+
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.18.250:33306/zg?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+
+  jpa:
+    database: mysql
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+
+  redis:
+    database: 0
+    host: 192.168.18.250
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 50000
+    password: dmcn
+
+  mvc:
+    dispatch-options-request: true
+
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+
+ftp:
+  host: 192.168.18.210
+  port: 22
+  username: root
+  password: dmcn@123

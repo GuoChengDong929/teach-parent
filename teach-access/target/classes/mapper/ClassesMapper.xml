@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.access.business.quality.transact.mapper.ClassesMapper" >
+
+    
+    <resultMap id="classesMapper" type="com.teach.entity.quality.transact.Classes">
+        <id property="id" column="id"></id>
+        <result property="classesName" column="classes_name"></result>
+        <result property="startTime" column="start_time"></result>
+        <result property="endTime" column="end_time"></result>
+        <result property="curriculumId" column="curriculum_id"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="curriculumName" column="curriculum_name"></result>
+        <collection property="users"  javaType="java.util.List" ofType="com.teach.entity.access.User">
+            <id property="id" column="id"></id>
+            <result property="nickName" column="nick_name"></result>
+        </collection>
+    </resultMap>
+    
+    <!--<select id="getClassesList" parameterType="java.util.Map" resultMap="classesMapper">
+        select
+            *,
+            (select name from ac_curriculum where id = c.curriculum_id) as curriculumName
+        from
+          qu_classes c
+        inner join
+          qu_classes_user cu
+        on
+          c.id = cu.classes_id
+        inner join
+          pe_user u
+        on
+          cu.user_id = u.id
+        limit #{map.page},#{map.size}
+    </select>
+
+    <select id="getClassesCount" resultType="java.lang.Long">
+        select
+          count(0)
+        from
+          qu_classes c
+        inner join
+          qu_classes_user cu
+        on
+          c.id = cu.classes_id
+        inner join
+          pe_user u
+        on
+          cu.user_id = u.id
+    </select>-->
+
+</mapper>
