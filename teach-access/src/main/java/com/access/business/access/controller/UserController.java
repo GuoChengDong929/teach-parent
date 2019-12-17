@@ -6,6 +6,7 @@ import com.teach.entity.quality.transact.Teacher;
 import com.teach.entity.vo.UserTeacherVo;
 import com.teach.response.Result;
 import com.teach.utils.BeanMapUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequiresPermissions("api-user-select")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Result list(@RequestBody Map<String,Object> map){
         return userService.list(map);
     }
 
+    @RequiresPermissions("api-user-add")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public Result save(@RequestBody UserTeacherVo vo) throws Exception {
 
@@ -36,6 +39,7 @@ public class UserController {
         return userService.save(user,teacher);
     }
 
+    @RequiresPermissions("api-user-update")
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Result update(@RequestBody UserTeacherVo vo){
         User user = new User();

@@ -1,11 +1,13 @@
 package com.access.business.access.repository;
 
 import com.teach.entity.access.User;
+import com.teach.response.Result;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserRepository extends JpaRepository<User,String>, JpaSpecificationExecutor<User> {
 
@@ -16,4 +18,5 @@ public interface UserRepository extends JpaRepository<User,String>, JpaSpecifica
 
     @Query(nativeQuery = true, value = "select count(u.id) from pe_user u ,pe_teacher t where  u.id = t.id AND t.department_id = ?")
     long getTeacherCount(String departmentId);
+
 }

@@ -1,5 +1,7 @@
 package com.access.business.access.controller;
 
+import com.access.business.access.repository.UserRepository;
+import com.access.business.access.service.UserService;
 import com.teach.response.ProfileResult;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
@@ -8,6 +10,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,9 @@ import java.util.Map;
 @RequestMapping("/sys")
 public class LoginController {
 
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Result login(@RequestBody Map<String,Object> loginMap){
@@ -58,25 +64,12 @@ public class LoginController {
         //2.获取安全数据
         ProfileResult result = (ProfileResult)principals.getPrimaryPrincipal();
 
-//        String userid = claims.getId();
-//        //获取用户信息
-//        User user = userService.findById(userid);
-//        //根据不同的用户级别获取用户权限
-//
-//        ProfileResult result = null;
-//
-//        if("user".equals(user.getLevel())) {
-//            result = new ProfileResult(user);
-//        }else {
-//            Map map = new HashMap();
-//            if("coAdmin".equals(user.getLevel())) {
-//                map.put("enVisible","1");
-//            }
-//            List<Permission> list = permissionService.findAll(map);
-//            result = new ProfileResult(user,list);
-//        }
         return new Result(ResultCode.SUCCESS,result);
     }
 
+    @RequestMapping(value = "/updatePassword",method = RequestMethod.POST)
+    public Result updatePassword(@RequestBody Map<String,Object> map){
+        return userService.updatePassword(map);
+    }
 
 }

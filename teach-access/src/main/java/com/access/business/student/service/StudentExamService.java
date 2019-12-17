@@ -14,9 +14,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teach.entity.academic.exam.*;
+import com.teach.entity.academic.question.Ask;
 import com.teach.entity.academic.question.Selection;
 import com.teach.entity.academic.question.Single;
 import com.teach.entity.quality.student.Student;
+import com.teach.entity.vo.GoBackVo;
+import com.teach.entity.vo.QuestionTypeVo;
 import com.teach.error.CommonException;
 import com.teach.response.PageResult;
 import com.teach.response.ProfileResult;
@@ -27,11 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description:
@@ -114,10 +116,16 @@ public class StudentExamService {
 
     public Result save(Map<String, Object> map) {
 
+
+        if(StringUtils.isEmpty(map.get("singleOptions"))) return Result.ERROR();
+        if(StringUtils.isEmpty(map.get("selectionOptions"))) return Result.ERROR();
+        if(StringUtils.isEmpty(map.get("askOptions"))) return Result.ERROR();
+
+
+
+
         String[] singleOptions = map.get("singleOptions").toString().split(",");
-
         String[] selectionOptions = map.get("selectionOptions").toString().split("@");
-
         String[] askOptions = map.get("askOptions").toString().split("!&");
 
         Exam exam = examMapper.selectById(map.get("id").toString());  //获得当前试卷实例
@@ -285,6 +293,19 @@ public class StudentExamService {
 
 
     public Result getScoreStatus(String id) throws CommonException {
+
+        //查看试卷状态,如果试卷状态不是2,则说明用户通过非法途径进入,则拒绝
+        Exam exam = examMapper.selectById(id);
+
+        String examStatus = exam.getExamStatus();
+
+        if(!"2".equals(examStatus)){
+            throw new CommonException(ResultCode.EXAM_NO_START);
+        }
+
+
+
+
         ProfileResult profileResult = (ProfileResult) SecurityUtils.getSubject().getPrincipal();
 
         String studentId = profileResult.getId();
@@ -304,9 +325,11 @@ public class StudentExamService {
             }
 
             if("2".equals(status)) throw new CommonException(ResultCode.EXAM_IS_COMMIT);
+
+            return Result.SUCCESS();
         }
 
-        return Result.SUCCESS();
+       throw new CommonException(ResultCode.FAIL);
     }
 
     public Result getExamStatus(String id) {
@@ -351,4 +374,153 @@ public class StudentExamService {
         return new Result(ResultCode.SUCCESS,answer);
     }
 
+    public Result getShowExamStatus(String id) {
+
+        ProfileResult profileResult = (ProfileResult) SecurityUtils.getSubject().getPrincipal();
+
+        String studentId = profileResult.getId();
+
+        QueryWrapper<Score> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_id",studentId);
+        queryWrapper.eq("exam_id",id);
+
+        Score score = scoreMapper.selectOne(queryWrapper);
+
+        Exam exam = examMapper.selectById(id);
+
+
+        if(!"2".equals(score.getStatus()) && !"4".equals(exam.getExamStatus())){
+            return Result.FAIL();
+        }else{
+            return Result.SUCCESS();
+        }
+    }
+
+    public Result findExamByDBHasAnswer(Exam exam) {
+        QuestionTypeVo vo = new QuestionTypeVo();
+
+        List<Single> singles = new ArrayList<>();
+        List<Selection> selections = new ArrayList<>();
+        List<Ask> asks = new ArrayList<>();
+
+        String questionTypeIds = exam.getQuestionTypeIds();
+
+        if(questionTypeIds.contains("1")){
+            String singleJoins = exam.getSingleJoins();
+            for (String singleId : singleJoins.split(",")) {
+                Single single = singleMapper.selectById(singleId);
+                singles.add(single);
+            }
+        }
+
+        if(questionTypeIds.contains("2")){
+            String selectionJoins = exam.getSelectionJoins();
+            for (String selectionId : selectionJoins.split(",")) {
+                Selection selection = selectionMapper.selectById(selectionId);
+                selections.add(selection);
+            }
+        }
+
+        if(questionTypeIds.contains("3")){
+            String askJoins = exam.getAskJoins();
+            for (String askId : askJoins.split(",")) {
+                Ask ask = askMapper.selectById(askId);
+                asks.add(ask);
+            }
+        }
+
+        vo.setAskList(asks);
+        vo.setSelectionList(selections);
+        vo.setSingleList(singles);
+
+        return new Result(ResultCode.SUCCESS,vo);
+    }
+
+    public Result goBackStudentExamData(Exam exam) {
+
+        ProfileResult profileResult = (ProfileResult) SecurityUtils.getSubject().getPrincipal();
+
+        String studentId = profileResult.getId();
+
+        String questionTypeIds = exam.getQuestionTypeIds();
+
+        GoBackVo goBackVo = new GoBackVo();
+
+        if(questionTypeIds.contains("1")){
+            String singleJoins = exam.getSingleJoins();
+            String[] singleIdArray = singleJoins.split(",");
+
+            List<SingleResult> list = new ArrayList<>();
+
+            for (String singleId : singleIdArray) {
+                QueryWrapper<SingleResult> queryWrapper = new QueryWrapper();
+                queryWrapper.eq("single_id",singleId);
+                queryWrapper.eq("exam_id",exam.getId());
+                queryWrapper.eq("student_id",studentId );
+
+                List<SingleResult> singleResults = singleResultMapper.selectList(queryWrapper);
+                if(!CollectionUtils.isEmpty(singleResults) && singleResults.size() > 0) list.add(singleResults.get(0));
+            }
+
+            goBackVo.setSingleResults(list);
+        }
+
+        if(questionTypeIds.contains("2")){
+            String selectionJoins = exam.getSelectionJoins();
+            String[] selectionIdArray = selectionJoins.split(",");
+
+
+
+            List<SelectionResult> list = new ArrayList<>();
+
+            for (String selectionId : selectionIdArray) {
+                QueryWrapper<SelectionResult> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("exam_id",exam.getId());
+                queryWrapper.eq("student_id",studentId);
+                queryWrapper.eq("selection_id",selectionId);
+
+                SelectionResult selectionResult = selectionResultMapper.selectOne(queryWrapper);
+
+                list.add(selectionResult);
+
+            }
+
+            goBackVo.setSelectionResults(list);
+
+        }
+
+        if(questionTypeIds.contains("3")){
+            String askJoins = exam.getAskJoins();
+
+            String[] askIdArray = askJoins.split(",");
+
+            List<AskResult> list = new ArrayList<>();
+
+
+
+            for (String askId : askIdArray) {
+                QueryWrapper<AskResult> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("ask_id",askId);
+                queryWrapper.eq("exam_id",exam.getId());
+                queryWrapper.eq("student_id",studentId);
+
+                List<AskResult> askResults = askResultMapper.selectList(queryWrapper);
+
+                if(!CollectionUtils.isEmpty(askResults) && askResults.size() > 0) list.add(askResults.get(0));
+            }
+
+            goBackVo.setAskResults(list);
+        }
+
+        QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
+        scoreQueryWrapper.eq("student_id",studentId);
+        scoreQueryWrapper.eq("exam_id",exam.getId());
+
+
+        Score score = scoreMapper.selectOne(scoreQueryWrapper);
+
+        goBackVo.setScore(score);
+
+        return new Result(ResultCode.SUCCESS,goBackVo);
+    }
 }

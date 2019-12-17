@@ -1,5 +1,12 @@
 package com.access.business.academic.question.service;
 
+import cn.hutool.poi.excel.BigExcelWriter;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import cn.hutool.poi.excel.sax.Excel07SaxReader;
+import cn.hutool.poi.excel.sax.handler.RowHandler;
+import cn.hutool.system.SystemUtil;
 import com.access.business.academic.curriculum.mapper.ChapterMapper;
 import com.access.business.academic.question.mapper.AskMapper;
 import com.access.business.academic.question.mapper.SelectionMapper;
@@ -16,20 +23,35 @@ import com.teach.entity.academic.question.Single;
 import com.teach.entity.academic.question.Upper;
 import com.teach.entity.vo.QuestionTypeVo;
 import com.teach.entity.work.Company;
+import com.teach.error.CommonException;
 import com.teach.response.PageResult;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
 import com.teach.utils.BeanMapUtils;
 import com.teach.utils.IdWorker;
+import com.teach.utils.PoiUtil;
 import com.teach.utils.SftpUtil;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Transactional
@@ -491,5 +513,88 @@ public class QuestionService {
 
         return new Result(ResultCode.SUCCESS,vo);
 
+    }
+    
+
+    public List<Single> selectList() {
+        return singleMapper.selectList(null);
+    }
+
+    public String exportData(Map<String, Object> map, HttpServletResponse response) {
+
+        List<String> list = (List<String>) map.get("excelOptions");
+
+        //排序有序表头
+        List<String> tableList = new ArrayList<>();
+
+        //有序对象属性名
+        List<String> colNameList = new ArrayList<>();
+
+        if(list.contains("discipline")){ tableList.add("学科");colNameList.add("discipline"); }
+        if(list.contains("chapterName")){ tableList.add("章节名称");colNameList.add("chapterName");}
+        if(list.contains("sourced")){ tableList.add("来源");colNameList.add("sourced"); }
+        if(list.contains("companyName")){ tableList.add("企业名称");colNameList.add("companyName"); }
+        if(list.contains("singleContent")){ tableList.add("题干");colNameList.add("singleContent"); }
+        if(list.contains("singleOptionA")){ tableList.add("选项A");colNameList.add("singleOptionA"); }
+        if(list.contains("singleOptionB")){ tableList.add("选项B");colNameList.add("singleOptionB"); }
+        if(list.contains("singleOptionC")){ tableList.add("选项C");colNameList.add("singleOptionC"); }
+        if(list.contains("singleOptionD")){ tableList.add("选项D");colNameList.add("singleOptionD"); }
+        if(list.contains("singleAsk")){ tableList.add("答案");colNameList.add("singleAsk"); }
+        if(list.contains("status")){ tableList.add("状态");colNameList.add("status"); }
+
+        //将列集合转换为数组
+        String [] columnNames = colNameList.toArray(new String [colNameList.size()]);
+
+        String [] tableHeader = tableList.toArray(new String [tableList.size()]);
+
+        //查询数据
+        List<Single> singles = singleMapper.selectList(null);
+
+        boolean showOrHiddenHeader = "2".equals(map.get("showOrHiddenHeader").toString());
+
+        PoiUtil.downLoadExcel(response,columnNames,tableHeader,singles,"数据.xlsx",showOrHiddenHeader,showOrHiddenHeader ? map.get("headerContent").toString():"");
+
+        return null;
+    }
+
+    public Result uploadQuestion(MultipartFile file) throws IOException {
+        List<String[]> data = PoiUtil.readExcel(file);
+
+        List<Single> error = new ArrayList<>();
+
+        for (String[] row : data) {
+
+            QueryWrapper<Chapter> chapterQueryWrapper = new QueryWrapper<>();
+            chapterQueryWrapper.eq("name",row[1]);
+
+            Chapter chapter = chapterMapper.selectOne(chapterQueryWrapper);
+
+            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
+            companyQueryWrapper.eq("name",row[3]);
+
+            Company company = companyMapper.selectOne(companyQueryWrapper);
+
+            Single single = Single.builder()
+                    .discipline(row[0])
+                    .chapterName(row[1])
+                    .chapterId(chapter == null ? null : chapter.getId())
+                    .sourced(row[2])
+                    .companyName(row[3])
+                    .companyId(company == null ? null : company.getId())
+                    .singleContent(row[4])
+                    .singleOptionA(row[5])
+                    .singleOptionB(row[6])
+                    .singleOptionC(row[7])
+                    .singleOptionD(row[8])
+                    .singleAsk(row[9])
+                    .status(row[10])
+                    .createTime(new Date())
+                    .type("1")
+                    .id(idWorker.nextId() + "")
+                    .build();
+
+            singleMapper.insert(single);
+        }
+        return Result.SUCCESS();
     }
 }

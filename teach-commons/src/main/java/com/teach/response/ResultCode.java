@@ -43,12 +43,14 @@ public enum ResultCode {
     EXAM_MARKING_ASK_SCORE(false,60003,"问答题的评分不能为负数"),
     EXAM_MARKING_ASK_SCORE_MAX(false,60003,"评分分数过大"),
     EXAM_IS_COMMIT(false,60004,"试卷已提交,暂时无法查看"),
+    EXAM_NO_START(false,60005,"考试未开始,你想做什么?"),
 
 
+    // 试题 question
     SINGLE_SIZE_OUTPUT(false,70001,"所选单选题的数量大于题库总数量"),
-    SELECTION_SIZE_OUTPUT(false,70001,"所选多选题的数量大于题库总数量"),
-    ASK_SIZE_OUTPUT(false,70001,"所选问答题的数量大于题库总数量");
-
+    SELECTION_SIZE_OUTPUT(false,70002,"所选多选题的数量大于题库总数量"),
+    ASK_SIZE_OUTPUT(false,70003,"所选问答题的数量大于题库总数量"),
+    EXECL_DATA_IS_NULL(false,7004,"没有任何数据可供导出");
 
     //---权限操作返回码----
     //---其他操作返回码----

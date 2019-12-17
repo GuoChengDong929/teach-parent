@@ -8,10 +8,12 @@ import com.teach.entity.access.User;
 import com.teach.entity.quality.transact.Teacher;
 import com.teach.entity.vo.UserTeacherVo;
 import com.teach.response.PageResult;
+import com.teach.response.ProfileResult;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
 import com.teach.utils.IdWorker;
 import com.teach.utils.PinYinUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +156,26 @@ public class UserService {
         }else {
             return Result.FAIL();
         }
+
+    }
+
+    public Result updatePassword(Map<String, Object> map) {
+        String password = map.get("password").toString();
+        String newPassowrd = map.get("newPassword").toString();
+        ProfileResult profileResult = (ProfileResult) SecurityUtils.getSubject().getPrincipal();
+        String id = profileResult.getId();
+
+        User user = userRepository.findById(id).get();
+
+        if(user.getPassword().equals(new Md5Hash(password,user.getPassword(),3))){
+            return new Result(10001,"密码不正确",false);
+        }
+
+        String newPass = new Md5Hash(newPassowrd, user.getUsername(), 3).toString();
+
+        userRepository.save(user);
+
+        return Result.SUCCESS();
 
     }
 }

@@ -1,6 +1,7 @@
 package com.access.business.student.controller;
 
 import com.access.business.student.service.StudentExamService;
+import com.teach.entity.academic.exam.Exam;
 import com.teach.error.CommonException;
 import com.teach.response.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,12 @@ public class StudentExamController {
         return studentExamService.getExamStatus(id);
     }
 
+    //学生查看试卷:  如果当前学生的score中的status不是2, 试卷状态不是为4,则不允许
+    @RequestMapping(value = "/getShowExamStatus/{id}",method = RequestMethod.GET)
+    public Result getShowExamStatus(@PathVariable("id") String id){
+        return studentExamService.getShowExamStatus(id);
+    }
+
     //保存临时试卷答案到缓存
     @RequestMapping(value = "/saveTempAnswer",method = RequestMethod.POST)
     public Result saveTempAnswer(@RequestBody Map<String,Object>map) throws Exception {
@@ -53,5 +60,17 @@ public class StudentExamController {
     @RequestMapping(value = "/echoTempAnswer/{id}",method = RequestMethod.GET)
     public Result echoTempAnswer(@PathVariable("id")String id){
         return studentExamService.echoTempAnswer(id);
+    }
+
+
+    /**试卷讲解,带答案*/
+    @RequestMapping(value = "/findExamByDBHasAnswer",method = RequestMethod.POST)
+    public Result findExamByDBHasAnswer(@RequestBody Exam exam){
+        return studentExamService.findExamByDBHasAnswer(exam);
+    }
+
+    @RequestMapping(value = "/goBackStudentExamData",method = RequestMethod.POST)
+    public Result goBackStudentExamData(@RequestBody Exam exam){
+        return studentExamService.goBackStudentExamData(exam);
     }
 }

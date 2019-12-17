@@ -5,8 +5,8 @@ com\teach\entity\vo\AskVo$AskVoBuilder.class
 com\teach\response\Result.class
 com\teach\utils\SftpUtil.class
 com\teach\shiro\ParentRealm.class
+com\teach\entity\vo\GoBackVo$GoBackVoBuilder.class
 com\teach\entity\vo\UserTeacherVo$UserTeacherVoBuilder.class
-com\teach\response\UserResult.class
 com\teach\entity\academic\exam\SelectionResult.class
 com\teach\entity\academic\question\Single.class
 com\teach\entity\access\Role.class
@@ -33,7 +33,6 @@ com\teach\entity\academic\question\Selection.class
 com\teach\entity\quality\transact\Teacher$TeacherBuilder.class
 com\teach\entity\vo\AskResultVo.class
 com\teach\entity\academic\curriculum\Chapter.class
-com\teach\response\RoleResult.class
 com\teach\entity\vo\ScoreVo.class
 com\teach\entity\academic\question\Selection$SelectionBuilder.class
 com\teach\entity\access\Department.class
@@ -45,6 +44,7 @@ com\teach\entity\academic\exam\Exam$ExamBuilder.class
 com\teach\entity\academic\question\Single$SingleBuilder.class
 com\teach\entity\academic\question\Upper$UpperBuilder.class
 com\teach\entity\quality\student\Student$StudentBuilder.class
+com\teach\utils\PoiUtil.class
 com\teach\entity\academic\curriculum\Curriculum.class
 com\teach\entity\vo\UserTeacherVo.class
 com\teach\entity\work\Company.class
@@ -53,6 +53,7 @@ com\teach\entity\work\Company$CompanyBuilder.class
 com\teach\entity\academic\question\Upper.class
 com\teach\shiro\CustomSessionManager.class
 com\teach\entity\academic\exam\SingleResult$SingleResultBuilder.class
+com\teach\entity\vo\GoBackVo.class
 com\teach\entity\quality\student\Student.class
 com\teach\base\BaseController.class
 com\teach\entity\academic\curriculum\Chapter$ChapterBuilder.class
