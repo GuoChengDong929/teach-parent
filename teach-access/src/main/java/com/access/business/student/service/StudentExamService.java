@@ -20,6 +20,7 @@ import com.teach.entity.academic.question.Single;
 import com.teach.entity.quality.student.Student;
 import com.teach.entity.vo.GoBackVo;
 import com.teach.entity.vo.QuestionTypeVo;
+import com.teach.entity.vo.ScoreVo;
 import com.teach.error.CommonException;
 import com.teach.response.PageResult;
 import com.teach.response.ProfileResult;
@@ -115,14 +116,6 @@ public class StudentExamService {
     }
 
     public Result save(Map<String, Object> map) {
-
-
-        if(StringUtils.isEmpty(map.get("singleOptions"))) return Result.ERROR();
-        if(StringUtils.isEmpty(map.get("selectionOptions"))) return Result.ERROR();
-        if(StringUtils.isEmpty(map.get("askOptions"))) return Result.ERROR();
-
-
-
 
         String[] singleOptions = map.get("singleOptions").toString().split(",");
         String[] selectionOptions = map.get("selectionOptions").toString().split("@");
@@ -469,8 +462,6 @@ public class StudentExamService {
             String selectionJoins = exam.getSelectionJoins();
             String[] selectionIdArray = selectionJoins.split(",");
 
-
-
             List<SelectionResult> list = new ArrayList<>();
 
             for (String selectionId : selectionIdArray) {
@@ -522,5 +513,10 @@ public class StudentExamService {
         goBackVo.setScore(score);
 
         return new Result(ResultCode.SUCCESS,goBackVo);
+    }
+
+    public Result analysisExam(Exam exam) {
+        List<ScoreVo> vo = examMapper.getStudentInfoByExamId(exam.getId());
+        return new Result(ResultCode.SUCCESS,vo);
     }
 }

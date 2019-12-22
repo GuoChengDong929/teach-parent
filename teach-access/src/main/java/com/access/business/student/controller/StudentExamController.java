@@ -69,8 +69,16 @@ public class StudentExamController {
         return studentExamService.findExamByDBHasAnswer(exam);
     }
 
+    /** 试卷讲解时,学生数据的回显 */
     @RequestMapping(value = "/goBackStudentExamData",method = RequestMethod.POST)
     public Result goBackStudentExamData(@RequestBody Exam exam){
         return studentExamService.goBackStudentExamData(exam);
     }
+
+    /**成绩分析*/
+    @RequestMapping(value = "/analysisExam",method = RequestMethod.POST)
+    public Result analysisExam(@RequestBody Exam exam){
+        return studentExamService.analysisExam(exam);
+    }
+
 }

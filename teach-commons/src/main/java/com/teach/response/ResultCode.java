@@ -28,6 +28,7 @@ public enum ResultCode {
 
 
     //课程------------------
+    CURRICULUM_IS_NOT_EXIST(false,30000,"所选阶段查无课程"),
     CURRICULUM_HAS_CHAPTER(false,30001,"课程中存在章节"),
 
     //学生 -----------------

@@ -27,4 +27,11 @@ public class Curriculum implements Serializable {
 
     @TableField("create_time")
     private Date createTime;
+
+    private String title; //刷题专用: 显示标题文本
+
+    private String description; //刷题专用: 显示阶段描述
+
+    private String avatar; //刷题专用: 显示的图片地址
+
 }

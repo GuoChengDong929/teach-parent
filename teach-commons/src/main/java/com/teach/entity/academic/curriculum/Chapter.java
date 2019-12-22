@@ -4,10 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.teach.entity.academic.question.Ask;
+import com.teach.entity.academic.question.Selection;
+import com.teach.entity.academic.question.Single;
+import com.teach.entity.academic.question.Upper;
 import lombok.*;
 
+
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,4 +36,14 @@ public class Chapter implements Serializable {
 
     @TableField("create_time")
     private Date createTime;
+
+    @TableField(exist = false)
+    private Integer total;
+
+    @TableField(exist = false)
+    private Integer okCount;
+
+    @TableField(exist = false)
+    private Integer noCount;
+    
 }

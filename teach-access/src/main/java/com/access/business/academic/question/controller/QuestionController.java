@@ -75,7 +75,7 @@ public class QuestionController {
 
     @RequestMapping(value = "/uploadQuestion",method = RequestMethod.POST)
     public Result uploadQuestion(@RequestParam("file") MultipartFile file) throws IOException {
-       return  questionService.uploadQuestion(file);
+        return  questionService.uploadQuestion(file);
     }
 
 

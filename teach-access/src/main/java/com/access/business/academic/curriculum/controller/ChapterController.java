@@ -2,13 +2,11 @@ package com.access.business.academic.curriculum.controller;
 
 import com.access.business.academic.curriculum.service.ChapterService;
 import com.teach.entity.academic.curriculum.Chapter;
+import com.teach.error.CommonException;
 import com.teach.response.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 //
@@ -44,4 +42,10 @@ public class ChapterController {
         return chapterService.update(chapter);
     }
 
+
+    //通过阶段查询当前阶段的所有章节及章节下的所有试题数据集合
+    @RequestMapping(value = "/getChapterList/{curriculumId}",method = RequestMethod.POST)
+    public Result getChapterList(@PathVariable("curriculumId")String curriculumId) throws CommonException {
+        return chapterService.getChapterList(curriculumId);
+    }
 }

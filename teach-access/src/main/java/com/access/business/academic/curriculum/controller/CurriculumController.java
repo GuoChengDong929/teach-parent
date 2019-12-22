@@ -7,6 +7,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RequestMapping("/curriculum")
 @RestController
 public class CurriculumController {
@@ -32,4 +34,10 @@ public class CurriculumController {
         return curriculumService.update(curriculum);
     }
 
+    //不给权限,学生刷题列表
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    public Result list(@RequestBody Map<String,Object> map){
+        return curriculumService.list(map);
+    }
 }
+

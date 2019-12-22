@@ -560,8 +560,6 @@ public class QuestionService {
     public Result uploadQuestion(MultipartFile file) throws IOException {
         List<String[]> data = PoiUtil.readExcel(file);
 
-        List<Single> error = new ArrayList<>();
-
         for (String[] row : data) {
 
             QueryWrapper<Chapter> chapterQueryWrapper = new QueryWrapper<>();
