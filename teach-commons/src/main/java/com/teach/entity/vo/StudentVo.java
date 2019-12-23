@@ -14,6 +14,9 @@ import java.util.List;
 public class StudentVo implements Serializable {
 
     private String studentId;
+    private String examId;
+    private String scoreId;
     private String nickName;
     private List<Integer>scores;
+    private Integer avg;
 }

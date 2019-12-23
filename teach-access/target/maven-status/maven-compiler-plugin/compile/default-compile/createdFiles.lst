@@ -36,6 +36,7 @@ com\access\business\academic\curriculum\controller\ChapterController.class
 com\access\business\student\service\StudentExamService.class
 com\access\business\access\service\PermissionService$2.class
 com\access\config\CorsConfiguration.class
+com\access\business\academic\supervise\service\SuperviseService.class
 com\access\business\work\company\service\CompanyService.class
 com\access\business\access\controller\LoginController.class
 com\access\business\quality\student\service\StudentService.class
@@ -56,3 +57,4 @@ com\access\business\academic\curriculum\service\ChapterService.class
 com\access\business\work\company\mapper\CompanyMapper.class
 com\access\config\AccessRealm.class
 com\access\business\academic\curriculum\controller\CurriculumController.class
+com\access\business\academic\supervise\controller\SuperviseController.class

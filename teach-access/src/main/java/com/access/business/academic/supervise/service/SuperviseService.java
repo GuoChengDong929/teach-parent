@@ -52,6 +52,8 @@ public class SuperviseService {
 
         String classesId = map.get("classesId").toString();
 
+        String examType = map.get("type").toString(); //1日测  2周测  3月考
+
         String[] str = map.get("date").toString().split("~");
 
         Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(str[0]);
@@ -63,7 +65,7 @@ public class SuperviseService {
 
         examQueryWrapper.eq("classes_id",classesId);
         examQueryWrapper.between("exam_time",startDate,endDate);
-
+        examQueryWrapper.eq("exam_type",examType);
         List<Exam> exams = examMapper.selectList(examQueryWrapper);
 
         List<String> headers = new ArrayList<>();
@@ -104,6 +106,7 @@ public class SuperviseService {
                 List<Integer> resultScores = new ArrayList<>();
 
                 for (Exam exam : exams) {
+                    studentVo.setExamId(exam.getId());
                     String studentId = student.getId();
                     String examId = exam.getId();
                     QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
@@ -114,10 +117,34 @@ public class SuperviseService {
 
                     if(scores != null && scores.size() > 0){
                         for (Score score : scores) {
-                            resultScores.add(score.getScore());
+                            studentVo.setScoreId(score.getId());
+                            if("0".equals(score.getStatus())){ //未参考
+                                resultScores.add(-1);
+                            }else{
+                                resultScores.add(score.getScore());
+                            }
                         }
                     }
                 }
+
+
+                //求平均分
+                int size = resultScores.size();
+
+                if(size == 0){
+                    studentVo.setAvg(0);
+                } else {
+                    int sum = 0;
+                    for (Integer score : resultScores) {
+                        if(score == -1){
+                            continue;
+                        }else{
+                            sum += score;
+                        }
+                    }
+                    studentVo.setAvg(sum / size);
+                }
+
 
                 studentVo.setScores(resultScores);
                 studentVos.add(studentVo);

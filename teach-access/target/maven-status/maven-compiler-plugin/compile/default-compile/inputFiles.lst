@@ -28,6 +28,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\UpperMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\student\mapper\StudentMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\controller\StudentExamController.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\service\SuperviseService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\MyAccessApplication.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\AskMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\SingleMapper.java
@@ -52,4 +53,5 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\mapper\CurriculumMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\mapper\SelectionResultMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\work\company\service\CompanyService.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\controller\SuperviseController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\mapper\SingleResultMapper.java
