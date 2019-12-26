@@ -4,6 +4,7 @@ import com.access.business.system.dictionaries.mapper.DictionariesMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.system.dictionaries.Dictionaries;
 import com.teach.response.PageResult;
 import com.teach.response.Result;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class DictionariesService {
+public class DictionariesService extends BaseService {
 
     @Autowired
     private DictionariesMapper dictionariesMapper;
@@ -46,6 +47,9 @@ public class DictionariesService {
 
     public Result save(Dictionaries dictionaries) {
         dictionaries.setCreateTime(new Date());
+        dictionaries.setModifyId(currentUser().getId());
+        dictionaries.setModifyUser(currentUser().getNickName());
+        dictionaries.setModifyTime(new Date());
         dictionariesMapper.insert(dictionaries);
         return Result.SUCCESS();
     }
@@ -53,6 +57,9 @@ public class DictionariesService {
     public Result update(Dictionaries dictionaries) {
         Dictionaries target = dictionariesMapper.selectById(dictionaries.getId());
         BeanUtils.copyProperties(dictionaries,target);
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
         dictionariesMapper.updateById(target);
         return Result.SUCCESS();
     }

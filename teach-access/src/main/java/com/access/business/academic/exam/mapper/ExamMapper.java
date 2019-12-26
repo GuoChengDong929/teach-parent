@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -29,4 +30,46 @@ public interface ExamMapper extends BaseMapper<Exam> {
     List<ScoreVo> getStudentInfoByExamId(@Param("examId")String examId);
 
 
+
+
+
+    @Select("SELECT e.* " +
+            "FROM st_exam e " +
+            "WHERE e.`classes_id` = #{classesId} " +
+            "AND e.`exam_type` = #{examType} " +
+            "AND e.`exam_time` = #{examTime} " +
+            "AND e.question_type_ids = '4'" )
+    Exam getExamByUpperExamTypeAndClassesIdAndExamTime(@Param("examType")String examType, @Param("classesId")String classesId, @Param("examTime")Date examTime);
+
+    @Select("SELECT e.* " +
+            "FROM st_exam e " +
+            "WHERE e.`classes_id` = #{classesId} " +
+            "AND e.`exam_type` = #{examType} " +
+            "AND e.`exam_time` = #{examTime} " +
+            "AND e.question_type_ids != '4'" )
+    Exam getExamByExamTypeAndClassesIdAndExamTime(@Param("examType")String examType, @Param("classesId")String classesId, @Param("examTime") Date examTime);
+
+    @Select("SELECT e.* " +
+            "FROM st_exam e " +
+            "WHERE e.`classes_id` = #{classesId} " +
+            "AND e.`exam_type` = #{examType} " +
+            "AND e.`exam_time` BETWEEN #{start} AND #{end} " +
+            "AND e.question_type_ids != '4'" )
+    List<Exam> getWeekExamByExamTypeAndClassesIdAndStartAndEnd(
+            @Param("examType")String examType,
+            @Param("classesId")String classesId,
+            @Param("start")Date start,
+            @Param("end")Date end);
+
+    @Select("SELECT e.* " +
+            "FROM st_exam e " +
+            "WHERE e.`classes_id` = #{classesId} " +
+            "AND e.`exam_type` = #{examType} " +
+            "AND e.`exam_time` BETWEEN #{start} AND #{end} " +
+            "AND e.question_type_ids = '4'" )
+    List<Exam> getWeekUpperExamByExamTypeAndClassesIdAndStartAndEnd(
+            @Param("examType")String examType,
+            @Param("classesId")String classesId,
+            @Param("start")Date start,
+            @Param("end")Date end);
 }

@@ -46,7 +46,9 @@ public class User implements Serializable {
     private String relation; //紧急联络人关系
     private String status;  //是否禁用该账号
 
-
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 
 
     @Transient

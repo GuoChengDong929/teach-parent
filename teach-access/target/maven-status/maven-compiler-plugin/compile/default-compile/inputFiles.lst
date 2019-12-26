@@ -2,6 +2,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\UserController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\config\ShiroConfiguration.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\mapper\AskResultMapper.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\aop\LogAspect.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\student\controller\StudentController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\service\StudentExamService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\controller\ChapterController.java
@@ -12,7 +13,9 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\repository\UserRepository.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\system\dictionaries\service\DictionariesService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\RoleController.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\mapper\ErrorLogMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\mapper\ChapterMapper.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\controller\OperationLogController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\repository\PermissionRepository.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\mapper\TeacherMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\controller\CurriculumController.java
@@ -21,6 +24,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\DepartmentController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\service\ChapterService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\service\QuestionService.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\controller\ErrorLogController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\transact\service\ClassesService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\LoginController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\controller\ExamController.java
@@ -29,18 +33,21 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\student\mapper\StudentMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\controller\StudentExamController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\service\SuperviseService.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\service\OperationLogService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\MyAccessApplication.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\AskMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\SingleMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\system\dictionaries\controller\DictionariesController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\config\AccessRealm.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\controller\TeacherController.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\mapper\OperationLogMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\service\TeacherService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\service\DepartmentService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\work\company\mapper\CompanyMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\service\ExamService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\controller\QuestionController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\mapper\ExamMapper.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\service\ErrorLogService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\student\service\StudentService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\service\UserService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\PermissionController.java

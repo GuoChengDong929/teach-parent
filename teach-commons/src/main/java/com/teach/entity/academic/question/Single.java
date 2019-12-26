@@ -50,4 +50,7 @@ public class Single implements Serializable {
 
     private Date createTime; //创建时间
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 }

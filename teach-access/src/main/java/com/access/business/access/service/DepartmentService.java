@@ -3,6 +3,7 @@ package com.access.business.access.service;
 import com.access.business.access.repository.DepartmentRepository;
 import com.access.business.access.repository.TeacherRepository;
 import com.access.business.access.repository.UserRepository;
+import com.teach.base.BaseService;
 import com.teach.entity.access.Department;
 import com.teach.entity.access.User;
 import com.teach.entity.quality.transact.Teacher;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class DepartmentService {
+public class DepartmentService extends BaseService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -41,6 +42,9 @@ public class DepartmentService {
     public Result saveDepartment(Department department) {
         department.setCreateTime(new Date());
         department.setId(idWorker.nextId() + "");
+        department.setModifyId(currentUser().getId());
+        department.setModifyUser(currentUser().getNickName());
+        department.setModifyTime(new Date());
         departmentRepository.save(department);
         return Result.SUCCESS();
     }
@@ -48,7 +52,12 @@ public class DepartmentService {
     public Result updateDepartment(Department department) {
         Department target = departmentRepository.findById(department.getId()).get();
         BeanUtils.copyProperties(department,target);
+
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
         departmentRepository.save(target);
+
         return Result.SUCCESS();
     }
 

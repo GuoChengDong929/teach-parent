@@ -28,6 +28,12 @@ public class Role implements Serializable {
     private Date createTime;
 
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
+
+
     @Transient
     private String permissionIds;  //在页面修改角色时,传递过来的权限ids字符串,用于绑定关系
 

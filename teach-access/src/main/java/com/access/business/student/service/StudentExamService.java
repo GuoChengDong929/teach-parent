@@ -13,6 +13,7 @@ import com.access.business.student.mapper.StudentExamMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.exam.*;
 import com.teach.entity.academic.question.Ask;
 import com.teach.entity.academic.question.Selection;
@@ -45,7 +46,7 @@ import java.util.*;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class StudentExamService {
+public class StudentExamService extends BaseService {
     
     @Autowired
     private StudentExamMapper studentExamMapper;
@@ -105,9 +106,11 @@ public class StudentExamService {
 
         queryWrapper.eq("classes_id",classesId);
 
+        queryWrapper.orderByDesc("create_time");
+
         IPage<Exam> iPage = new Page<>(page,size);
 
-        IPage<Exam> result = examMapper.selectPage(iPage, null);
+        IPage<Exam> result = examMapper.selectPage(iPage, queryWrapper);
 
         PageResult<Exam> pageResult = new PageResult<>(result.getTotal(),result.getRecords());
 
@@ -258,6 +261,9 @@ public class StudentExamService {
 
          score.setScore(totalScore);
          score.setExecuteTime(new Date());
+        score.setModifyId(currentUser().getId());
+        score.setModifyUser(currentUser().getNickName());
+        score.setModifyTime(new Date());
          scoreMapper.updateById(score);
 
          return Result.SUCCESS();
@@ -314,6 +320,9 @@ public class StudentExamService {
 
             if("0".equals(status)){
                 score.setStatus("1");
+                score.setModifyId(currentUser().getId());
+                score.setModifyUser(currentUser().getNickName());
+                score.setModifyTime(new Date());
                 scoreMapper.updateById(score);
             }
 

@@ -45,5 +45,10 @@ public class Chapter implements Serializable {
 
     @TableField(exist = false)
     private Integer noCount;
-    
+
+
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
 }

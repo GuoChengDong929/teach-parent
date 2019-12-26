@@ -5,6 +5,7 @@ import com.access.business.academic.curriculum.mapper.CurriculumMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.curriculum.Chapter;
 import com.teach.entity.academic.curriculum.Curriculum;
 import com.teach.response.PageResult;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CurriculumService {
+public class CurriculumService extends BaseService {
 
 
     @Autowired
@@ -30,6 +31,9 @@ public class CurriculumService {
 
     public Result save(Curriculum curriculum) {
         curriculum.setCreateTime(new Date());
+        curriculum.setModifyId(currentUser().getId());
+        curriculum.setModifyUser(currentUser().getNickName());
+        curriculum.setModifyTime(new Date());
         curriculumMapper.insert(curriculum);
         return Result.SUCCESS();
     }
@@ -37,6 +41,9 @@ public class CurriculumService {
     public Result update(Curriculum curriculum) {
         Curriculum target = curriculumMapper.selectById(curriculum.getId());
         BeanUtils.copyProperties(curriculum,target);
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
         curriculumMapper.updateById(target);
         return Result.SUCCESS();
     }

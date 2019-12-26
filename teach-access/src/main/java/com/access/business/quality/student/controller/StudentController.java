@@ -2,6 +2,7 @@ package com.access.business.quality.student.controller;
 
 import com.access.business.quality.student.service.StudentService;
 import com.teach.entity.vo.UserStudentVo;
+import com.teach.error.CommonException;
 import com.teach.response.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class StudentController {
 
     @RequiresPermissions("api-student-add")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
-    public Result save(@RequestBody UserStudentVo vo){
+    public Result save(@RequestBody UserStudentVo vo) throws CommonException {
         return studentService.save(vo);
     }
 

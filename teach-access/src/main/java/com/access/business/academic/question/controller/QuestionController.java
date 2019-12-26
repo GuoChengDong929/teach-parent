@@ -8,6 +8,7 @@ import com.access.business.academic.question.service.QuestionService;
 
 
 import com.alibaba.fastjson.JSON;
+import com.teach.aop.Log;
 import com.teach.entity.academic.question.Single;
 import com.teach.response.Result;
 
@@ -40,17 +41,19 @@ public class QuestionController {
     private QuestionService questionService;
 
 
-
+    @Log("试题列表")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Result list(@RequestBody Map<String,Object> map){
         return questionService.list(map);
     }
 
+    @Log("新增试题")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public Result save(@RequestBody Map<String,Object> map) throws Exception {
         return questionService.save(map);
     }
 
+    @Log("修改试题")
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Result update(@RequestBody Map<String,Object> map) throws Exception {
         return questionService.update(map);

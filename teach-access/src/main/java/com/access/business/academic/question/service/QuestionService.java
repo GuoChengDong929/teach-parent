@@ -16,6 +16,7 @@ import com.access.business.work.company.mapper.CompanyMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.curriculum.Chapter;
 import com.teach.entity.academic.question.Ask;
 import com.teach.entity.academic.question.Selection;
@@ -31,6 +32,7 @@ import com.teach.utils.BeanMapUtils;
 import com.teach.utils.IdWorker;
 import com.teach.utils.PoiUtil;
 import com.teach.utils.SftpUtil;
+import io.netty.util.internal.MacAddressUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFRow;
@@ -56,7 +58,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class QuestionService {
+public class QuestionService extends BaseService {
 
     @Autowired
     private SingleMapper singleMapper;
@@ -80,6 +82,16 @@ public class QuestionService {
     private IdWorker idWorker;
 
     public Result list(Map<String, Object> map) {
+
+
+        byte[] bytes = MacAddressUtil.bestAvailableMac();
+
+        String s = MacAddressUtil.formatAddress(bytes);
+        System.out.println("bestAvailableMac:"+ s);
+
+        byte[] bytes1 = MacAddressUtil.defaultMachineId();
+        String s1 = MacAddressUtil.formatAddress(bytes1);
+        System.out.println("defaultMachineId:" + s1);
 
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
@@ -258,6 +270,9 @@ public class QuestionService {
                 single.setCreateTime(new Date());
                 single.setId(idWorker.nextId() + "");
                 single.setStatus("1");
+                single.setModifyId(currentUser().getId());
+                single.setModifyUser(currentUser().getNickName());
+                single.setModifyTime(new Date());
                 singleMapper.insert(single);
 
                 return Result.SUCCESS();
@@ -269,6 +284,9 @@ public class QuestionService {
                 selection.setCreateTime(new Date());
                 selection.setId(idWorker.nextId() + "");
                 selection.setStatus("1");
+                selection.setModifyId(currentUser().getId());
+                selection.setModifyUser(currentUser().getNickName());
+                selection.setModifyTime(new Date());
                 selectionMapper.insert(selection);
                 return Result.SUCCESS();
             case "3":
@@ -279,6 +297,9 @@ public class QuestionService {
                 ask.setCreateTime(new Date());
                 ask.setId(idWorker.nextId() + "");
                 ask.setStatus("1");
+                ask.setModifyId(currentUser().getId());
+                ask.setModifyUser(currentUser().getNickName());
+                ask.setModifyTime(new Date());
                 askMapper.insert(ask);
                 return Result.SUCCESS();
             case "4":
@@ -303,6 +324,14 @@ public class QuestionService {
             map.put("createTime",date);
         }
 
+
+        if(map.get("modifyTime") != null){
+            String modifyTime = map.get("modifyTime").toString(); //把前端传递的long类型的createTime转换成Date
+            long time = Long.parseLong(modifyTime);
+
+            Date date = new Date(time);
+            map.put("modifyTime",date);
+        }
         switch (type){
             case "1":
                 Single singleTarget = singleMapper.selectById(id);
@@ -329,6 +358,10 @@ public class QuestionService {
                 }
 
                 BeanUtils.copyProperties(single,singleTarget);
+
+                singleTarget.setModifyId(currentUser().getId());
+                singleTarget.setModifyUser(currentUser().getNickName());
+                singleTarget.setModifyTime(new Date());
 
                 singleMapper.updateById(singleTarget);
 
@@ -360,6 +393,10 @@ public class QuestionService {
 
                 BeanUtils.copyProperties(selection,selectionTarget);
 
+                selectionTarget.setModifyId(currentUser().getId());
+                selectionTarget.setModifyUser(currentUser().getNickName());
+                selectionTarget.setModifyTime(new Date());
+
                 selectionMapper.updateById(selectionTarget);
 
                 return Result.SUCCESS();
@@ -389,6 +426,10 @@ public class QuestionService {
                 }
 
                 BeanUtils.copyProperties(ask,askTarget);
+
+                askTarget.setModifyId(currentUser().getId());
+                askTarget.setModifyUser(currentUser().getNickName());
+                askTarget.setModifyTime(new Date());
 
                 askMapper.updateById(askTarget);
 
@@ -423,6 +464,13 @@ public class QuestionService {
 
                 upperTarget.setStatus("1");
 
+
+                upperTarget.setCreateTime(new Date());
+
+                upperTarget.setModifyId(currentUser().getId());
+                upperTarget.setModifyTime(new Date());
+                upperTarget.setModifyUser(currentUser().getNickName());
+
                 upperMapper.updateById(upperTarget);
 
                 return Result.SUCCESS();
@@ -454,6 +502,10 @@ public class QuestionService {
                 .upperUrl(url)
                 .createTime(new Date())
                 .build();
+
+        upper.setModifyId(currentUser().getId());
+        upper.setModifyUser(currentUser().getNickName());
+        upper.setModifyTime(new Date());
 
         upperMapper.insert(upper);
 
@@ -591,8 +643,14 @@ public class QuestionService {
                     .id(idWorker.nextId() + "")
                     .build();
 
+            single.setModifyId(currentUser().getId());
+            single.setModifyUser(currentUser().getNickName());
+            single.setModifyTime(new Date());
+
+
             singleMapper.insert(single);
         }
         return Result.SUCCESS();
     }
+
 }

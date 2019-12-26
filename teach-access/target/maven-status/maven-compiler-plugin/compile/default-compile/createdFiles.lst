@@ -1,5 +1,7 @@
 com\access\business\academic\question\mapper\UpperMapper.class
+com\access\business\log\controller\OperationLogController.class
 com\access\business\academic\curriculum\service\CurriculumService.class
+com\access\business\log\mapper\ErrorLogMapper.class
 com\access\business\access\service\UserService.class
 com\access\business\quality\teahcer\controller\TeacherController.class
 com\access\business\access\repository\PermissionRepository.class
@@ -16,13 +18,17 @@ com\access\business\system\dictionaries\mapper\DictionariesMapper.class
 com\access\business\student\mapper\SingleResultMapper.class
 com\access\business\access\repository\RoleRepository.class
 com\access\business\access\controller\UserController.class
+com\access\business\log\service\ErrorLogService.class
 com\access\business\access\service\PermissionService$1.class
 com\access\business\academic\exam\service\ExamService.class
 com\access\business\quality\student\controller\StudentController.class
 com\access\business\academic\curriculum\mapper\ChapterMapper.class
 com\access\business\access\repository\UserRepository.class
+com\access\business\log\controller\ErrorLogController.class
 com\access\business\quality\teahcer\mapper\TeacherMapper.class
 com\access\business\access\service\PermissionService.class
+com\access\business\log\service\OperationLogService.class
+com\access\business\log\aop\LogAspect.class
 com\access\business\system\dictionaries\service\DictionariesService.class
 com\access\business\access\controller\RoleController.class
 com\access\business\work\company\controller\CompanyController.class
@@ -46,6 +52,7 @@ com\access\business\access\controller\PermissionController.class
 com\access\business\access\repository\DepartmentRepository.class
 com\access\business\access\service\RoleService.class
 com\access\business\quality\transact\controller\ClassesController.class
+com\access\business\log\mapper\OperationLogMapper.class
 com\access\business\academic\exam\controller\ExamController.class
 com\access\business\academic\question\mapper\SelectionMapper.class
 com\access\business\academic\question\service\QuestionService.class

@@ -48,4 +48,8 @@ public class Selection implements Serializable {
     private String status;
 
     private Date createTime;
+
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 }

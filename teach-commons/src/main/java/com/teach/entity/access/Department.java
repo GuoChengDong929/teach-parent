@@ -24,4 +24,8 @@ public class Department implements Serializable {
     private String name; //部门名称
 
     private Date createTime; //创建时间
+
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 }

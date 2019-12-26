@@ -52,4 +52,14 @@ public class UserController {
 
     }
 
+
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    public Result findUserInfo(){
+        return userService.findUserInfo();
+    }
+
+    @RequestMapping(value = "/updatePassword",method = RequestMethod.POST)
+    public Result updatePassword(@RequestBody Map<String,Object> map){
+        return userService.updatePassword(map);
+    }
 }

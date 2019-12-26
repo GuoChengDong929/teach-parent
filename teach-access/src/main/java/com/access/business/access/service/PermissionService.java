@@ -1,6 +1,7 @@
 package com.access.business.access.service;
 
 import com.access.business.access.repository.PermissionRepository;
+import com.teach.base.BaseService;
 import com.teach.entity.access.Permission;
 
 import com.teach.entity.access.Role;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class PermissionService {
+public class PermissionService extends BaseService {
 
 
     @Autowired
@@ -115,6 +116,10 @@ public class PermissionService {
         if(permissions != null && permissions.size() == 1) return Result.FAIL();
         permission.setId(idWorker.nextId() + "");
         permission.setCreateTime(new Date());
+
+        permission.setModifyId(currentUser().getId());
+        permission.setModifyUser(currentUser().getNickName());
+        permission.setModifyTime(new Date());
         Permission target = permissionRepository.save(permission);
         if(target != null) return Result.SUCCESS();
         else return Result.FAIL();
@@ -123,6 +128,10 @@ public class PermissionService {
     public Result updatePermission(Permission permission) {
         Permission target = permissionRepository.findById(permission.getId()).get();
         BeanUtils.copyProperties(permission,target);
+
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
         permissionRepository.save(target);
         return Result.SUCCESS();
     }

@@ -41,4 +41,8 @@ public class Ask implements Serializable {
 
     private Date createTime;
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
 }

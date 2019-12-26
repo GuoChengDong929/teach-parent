@@ -33,7 +33,7 @@ public enum ResultCode {
 
     //学生 -----------------
     DO_NOT_INVALID_CLASSES(false,40001,"不能作废班级,有其他业务进行关联"),
-
+    INSERT_STUDENT_ERROR_IS_CLASSES_HAS_EXAMS_ING(false,40002,"班级有未结束的试卷,暂时无法添加学生"),
 
 
     DEPARTMENT_HAS_USERS(false,30001,"部门存在员工,无法删除"),
@@ -42,10 +42,12 @@ public enum ResultCode {
     EXAM_TIME_LT_NEW_DATE(false,60001,"考试时间应该大于当前时间至少10分钟"),
     EXAM_MARKING_TEACHER_COMMENT(false,60002,"问答题的评语不能为空"),
     EXAM_MARKING_ASK_SCORE(false,60003,"问答题的评分不能为负数"),
-    EXAM_MARKING_ASK_SCORE_MAX(false,60003,"评分分数过大"),
-    EXAM_IS_COMMIT(false,60004,"试卷已提交,暂时无法查看"),
-    EXAM_NO_START(false,60005,"考试未开始,你想做什么?"),
-
+    EXAM_MARKING_ASK_SCORE_MAX(false,60004,"评分分数过大"),
+    EXAM_IS_COMMIT(false,60005,"试卷已提交,暂时无法查看"),
+    EXAM_NO_START(false,60006,"考试未开始,你想做什么?"),
+    EXAM_DAY_IS_ALWAYS(false,60007,"当前选择的日期已有日测试卷"),
+    EXAM_WEEK_IS_ALWAYS(false,60008,"当前选择的日期已有周测试卷"),
+    EXAM_MONTH_IS_ALWAYS(false,60009,"当前选择的日期已有月考试卷"),
 
     // 试题 question
     SINGLE_SIZE_OUTPUT(false,70001,"所选单选题的数量大于题库总数量"),

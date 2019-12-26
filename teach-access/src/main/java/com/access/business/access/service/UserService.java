@@ -3,9 +3,13 @@ package com.access.business.access.service;
 import com.access.business.access.repository.RoleRepository;
 import com.access.business.access.repository.TeacherRepository;
 import com.access.business.access.repository.UserRepository;
+import com.access.business.quality.student.mapper.StudentMapper;
+import com.teach.base.BaseService;
 import com.teach.entity.access.Role;
 import com.teach.entity.access.User;
+import com.teach.entity.quality.student.Student;
 import com.teach.entity.quality.transact.Teacher;
+import com.teach.entity.vo.UserStudentVo;
 import com.teach.entity.vo.UserTeacherVo;
 import com.teach.response.PageResult;
 import com.teach.response.ProfileResult;
@@ -23,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.security.provider.MD5;
 
 import javax.persistence.criteria.*;
 import java.util.*;
@@ -30,7 +35,7 @@ import java.util.*;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class UserService {
+public class UserService extends BaseService{
 
     @Autowired
     private IdWorker idWorker;
@@ -44,6 +49,8 @@ public class UserService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private StudentMapper studentMapper;
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -123,6 +130,11 @@ public class UserService {
 
         if(roles != null && roles.size() > 0){
             user.setRoles(roles);
+
+            user.setModifyId(currentUser().getId());
+            user.setModifyUser(currentUser().getNickName());
+            user.setModifyTime(new Date());
+
             userRepository.save(user);
             teacher.setId(id);
             teacherRepository.save(teacher);
@@ -150,6 +162,11 @@ public class UserService {
 
         if(roles != null && roles.size() > 0){
             target.setRoles(roles);
+
+            target.setModifyId(currentUser().getId());
+            target.setModifyUser(currentUser().getNickName());
+            target.setModifyTime(new Date());
+
             userRepository.save(target);
             teacherRepository.save(teacherTarget);
             return Result.SUCCESS();
@@ -160,22 +177,67 @@ public class UserService {
     }
 
     public Result updatePassword(Map<String, Object> map) {
-        String password = map.get("password").toString();
+        String oldPassword = map.get("oldPassword").toString();
         String newPassowrd = map.get("newPassword").toString();
         ProfileResult profileResult = (ProfileResult) SecurityUtils.getSubject().getPrincipal();
         String id = profileResult.getId();
 
         User user = userRepository.findById(id).get();
 
-        if(user.getPassword().equals(new Md5Hash(password,user.getPassword(),3))){
+        oldPassword = new Md5Hash(oldPassword,user.getUsername(),3).toString();
+
+        if(!user.getPassword().equals(oldPassword)){
             return new Result(10001,"密码不正确",false);
         }
 
         String newPass = new Md5Hash(newPassowrd, user.getUsername(), 3).toString();
+
+        user.setModifyId(currentUser().getId());
+        user.setModifyUser(currentUser().getNickName());
+        user.setModifyTime(new Date());
+        user.setPassword(newPass);
 
         userRepository.save(user);
 
         return Result.SUCCESS();
 
     }
+
+    public Result findUserInfo() {
+
+        String id = currentUser().getId();
+
+        User user = userRepository.findById(id).get();
+
+        //判断当前用户是学生还是老师
+
+        String type = user.getType();
+
+        if("1".equals(type)){ //老师
+
+            Teacher teacher = teacherRepository.findById(id).get();
+
+            UserTeacherVo userTeacherVo = new UserTeacherVo();
+
+            BeanUtils.copyProperties(teacher,userTeacherVo);
+            BeanUtils.copyProperties(user,userTeacherVo);
+
+
+            return new Result(ResultCode.SUCCESS,userTeacherVo);
+
+        }else if("2".equals(type)){ //学生
+
+            Student student = studentMapper.selectById(id);
+
+            UserStudentVo userStudentVo = new UserStudentVo();
+
+            BeanUtils.copyProperties(student,userStudentVo);
+            BeanUtils.copyProperties(user,userStudentVo);
+
+            return new Result(ResultCode.SUCCESS,userStudentVo);
+        }
+
+        return Result.FAIL();
+    }
+
 }

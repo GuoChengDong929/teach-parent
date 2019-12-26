@@ -52,4 +52,8 @@ public class Classes implements Serializable {
     private String jyId;
 
     private String invalid; // 0作废 1不作废
+
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 }

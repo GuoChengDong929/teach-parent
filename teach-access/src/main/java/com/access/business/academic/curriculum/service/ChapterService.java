@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.curriculum.Chapter;
 import com.teach.entity.academic.curriculum.Curriculum;
 import com.teach.entity.academic.question.Ask;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class ChapterService {
+public class ChapterService extends BaseService {
 
     @Autowired
     private ChapterMapper chapterMapper;
@@ -76,6 +77,9 @@ public class ChapterService {
 
     public Result save(Chapter chapter) {
         chapter.setCreateTime(new Date());
+        chapter.setModifyId(currentUser().getId());
+        chapter.setModifyUser(currentUser().getNickName());
+        chapter.setModifyTime(new Date());
         chapterMapper.insert(chapter);
         return Result.SUCCESS();
     }
@@ -83,6 +87,9 @@ public class ChapterService {
     public Result update(Chapter chapter) {
         Chapter target = chapterMapper.selectById(chapter.getId());
         BeanUtils.copyProperties(chapter,target);
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
         chapterMapper.updateById(target);
         return Result.SUCCESS();
     }

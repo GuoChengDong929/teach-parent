@@ -34,4 +34,8 @@ public class Curriculum implements Serializable {
 
     private String avatar; //刷题专用: 显示的图片地址
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
 }

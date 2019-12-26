@@ -59,5 +59,9 @@ public class Score implements Serializable {
     @TableField(exist = false)
     private String studentName;
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
 
 }

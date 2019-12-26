@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.curriculum.Curriculum;
 import com.teach.entity.access.User;
 import com.teach.entity.quality.student.Student;
@@ -28,7 +29,7 @@ import java.util.Map;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class ClassesService {
+public class ClassesService extends BaseService {
 
     @Autowired
     private IdWorker idWorker;
@@ -113,6 +114,10 @@ public class ClassesService {
 
         classes.setTeachers(sb.toString());
 
+        classes.setModifyId(currentUser().getId());
+        classes.setModifyUser(currentUser().getNickName());
+        classes.setModifyTime(new Date());
+
         classesMapper.insert(classes);
 
         return Result.SUCCESS();
@@ -173,7 +178,11 @@ public class ClassesService {
 
         target.setCurriculumName(curriculum.getName());
 
-        
+
+        target.setModifyId(currentUser().getId());
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
+
         classesMapper.updateById(target);
 
         return Result.SUCCESS();
@@ -196,6 +205,10 @@ public class ClassesService {
 
         Classes classes = classesMapper.selectById(classesId);
         classes.setInvalid("0");
+
+        classes.setModifyId(currentUser().getId());
+        classes.setModifyUser(currentUser().getNickName());
+        classes.setModifyTime(new Date());
         classesMapper.updateById(classes);
         return Result.SUCCESS();
 

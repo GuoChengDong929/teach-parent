@@ -30,4 +30,8 @@ public class Dictionaries implements Serializable {
     private String description;
 
     private Date createTime;
+
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
 }

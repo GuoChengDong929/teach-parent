@@ -60,3 +60,10 @@ ftp:
   port: 22
   username: root
   password: dmcn@123
+
+operation:
+  openAopLog: true  #开启异步记录用户操作日志
+  max:  #单次最大批量入库数量
+    batch:
+      insert:
+        num: 1000

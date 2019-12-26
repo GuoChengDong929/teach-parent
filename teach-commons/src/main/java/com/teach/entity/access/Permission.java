@@ -56,6 +56,11 @@ public class Permission implements Serializable {
 
     private Date createTime;
 
+    private Date modifyTime;
+    private String modifyUser;
+    private String modifyId;
+
+
     @Transient
     private List<Permission> children;
 

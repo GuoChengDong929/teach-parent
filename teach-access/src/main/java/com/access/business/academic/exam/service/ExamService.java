@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
 import com.teach.entity.academic.exam.AskResult;
 import com.teach.entity.academic.exam.Exam;
 import com.teach.entity.academic.exam.Score;
@@ -33,6 +34,7 @@ import com.teach.response.Result;
 import com.teach.response.ResultCode;
 import com.teach.utils.BeanMapUtils;
 
+import com.teach.utils.DateUtils;
 import com.teach.utils.IdWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class ExamService {
+public class ExamService extends BaseService {
 
 
     @Autowired
@@ -111,16 +113,59 @@ public class ExamService {
 
         String examTime = map.get("examTime").toString();
 
-        Date parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(examTime);
+        Date parse = new SimpleDateFormat("yyyy-MM-dd").parse(examTime);
 
 
         if(parse.getTime() < (new Date().getTime() + 1000 * 60 * 10 )){
             return new Result(ResultCode.EXAM_TIME_LT_NEW_DATE);
         }
 
-
-
         map.put("examTime",parse);
+
+
+        String examType = map.get("examType").toString();
+
+        String classesId = map.get("classesId").toString();
+
+
+        String questionTypeIds = map.get("questionTypeIds").toString();
+
+
+        if("1".equals(examType)){
+            if(questionTypeIds.contains("4")){
+                Exam target = examMapper.getExamByUpperExamTypeAndClassesIdAndExamTime(examType,classesId,parse);
+                if( target  != null ) throw new CommonException(ResultCode.EXAM_DAY_IS_ALWAYS);
+            }else{
+                Exam targetExam = examMapper.getExamByExamTypeAndClassesIdAndExamTime(examType,classesId,parse);
+                if(targetExam != null) throw new CommonException(ResultCode.EXAM_DAY_IS_ALWAYS);
+            }
+        }else if("2".equals(examType)){
+            String timeInterval = DateUtils.getTimeInterval(parse);
+            String[] split = timeInterval.split(",");
+            Date start = new SimpleDateFormat("yyyy-MM-dd").parse(split[0]);
+            Date end = new SimpleDateFormat("yyyy-MM-dd").parse(split[1]);
+
+            if(questionTypeIds.contains("4")){
+                List<Exam> targetExam = examMapper.getWeekUpperExamByExamTypeAndClassesIdAndStartAndEnd(examType,classesId,start,end);
+                if(targetExam != null && targetExam.size() == 1) throw new CommonException(ResultCode.EXAM_WEEK_IS_ALWAYS);
+            }else{
+                List<Exam> targetExam = examMapper.getWeekExamByExamTypeAndClassesIdAndStartAndEnd(examType,classesId,start,end);
+                if(targetExam != null && targetExam.size() == 1 ) throw new CommonException(ResultCode.EXAM_WEEK_IS_ALWAYS);
+            }
+
+        }else if("3".equals(examType)){
+            Date start = DateUtils.getFirstDayDateOfMonth(parse);
+            Date end = DateUtils.getLastDayOfMonth(parse);
+            if(questionTypeIds.contains("4")){
+                List<Exam> targetExam = examMapper.getWeekUpperExamByExamTypeAndClassesIdAndStartAndEnd(examType,classesId,start,end);
+                if(targetExam != null && targetExam.size() == 1) throw new CommonException(ResultCode.EXAM_MONTH_IS_ALWAYS);
+            }else{
+                List<Exam> targetExam = examMapper.getWeekExamByExamTypeAndClassesIdAndStartAndEnd(examType,classesId,start,end);
+                if(targetExam != null && targetExam.size() == 1) throw new CommonException(ResultCode.EXAM_MONTH_IS_ALWAYS);
+            }
+        }
+
+
 
         Object singleScore = map.get("singleScore");
 
@@ -141,7 +186,7 @@ public class ExamService {
         String examPattern = exam.getExamPattern();
 
         if("2".equals(examPattern)){ //自动选题
-            String questionTypeIds = exam.getQuestionTypeIds();
+            //String questionTypeIds = exam.getQuestionTypeIds();
             String chapterIds = exam.getChapterIds();
 
             List<Single> singleList = new ArrayList<>();
@@ -269,6 +314,11 @@ public class ExamService {
 
         exam.setCreateTime(new Date());
 
+
+        exam.setModifyId(currentUser().getId());
+        exam.setModifyUser(currentUser().getNickName());
+        exam.setModifyTime(new Date());
+
         examMapper.insert(exam);
 
         return Result.SUCCESS();
@@ -319,6 +369,10 @@ public class ExamService {
 
     public Result start(Exam exam) {
         exam.setExamStatus("2");//状态为2 进行中
+
+        exam.setModifyId(currentUser().getId());
+        exam.setModifyUser(currentUser().getNickName());
+        exam.setModifyTime(new Date());
         examMapper.updateById(exam);
 
 
@@ -500,6 +554,9 @@ public class ExamService {
 
                 if("1".equals(score.getStatus())){
                     score.setStatus("2");
+                    score.setModifyId(currentUser().getId());
+                    score.setModifyUser(currentUser().getNickName());
+                    score.setModifyTime(new Date());
                     scoreMapper.updateById(score);
                 }
             }
@@ -510,6 +567,10 @@ public class ExamService {
         if(questionTypeIds.contains("3") || questionTypeIds.contains("4")){
             exam.setExamStatus("3"); //试卷修改为批阅中
         }
+
+        exam.setModifyId(currentUser().getId());
+        exam.setModifyUser(currentUser().getNickName());
+        exam.setModifyTime(new Date());
 
         examMapper.updateById(exam);
 
@@ -643,6 +704,10 @@ public class ExamService {
 
         studentScore.setScore(studentScore.getScore() + score);
 
+        studentScore.setModifyId(currentUser().getId());
+        studentScore.setModifyUser(currentUser().getNickName());
+        studentScore.setModifyTime(new Date());
+
         scoreMapper.updateById(studentScore);
 
         return Result.SUCCESS();
@@ -676,6 +741,10 @@ public class ExamService {
 
         exam.setExamStatus("4");
 
+        exam.setModifyId(currentUser().getId());
+        exam.setModifyUser(currentUser().getNickName());
+        exam.setModifyTime(new Date());
+
         examMapper.updateById(exam);
 
         //找到这个试卷的这个班级中所有的学生
@@ -699,6 +768,9 @@ public class ExamService {
             //TODO: start 后加的 不知道对不对  批阅后,修改学生的状态  从1 改成 2 , 0不变
             if("1".equals(score.getStatus())){
                 score.setStatus("2");
+                score.setModifyId(currentUser().getId());
+                score.setModifyUser(currentUser().getNickName());
+                score.setModifyTime(new Date());
                 scoreMapper.updateById(score);
             }
             //TODO: end 后加的 不知道对不对  批阅后,修改学生的状态  从1 改成 2 , 0不变

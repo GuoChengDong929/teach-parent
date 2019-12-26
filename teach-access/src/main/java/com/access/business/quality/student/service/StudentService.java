@@ -1,5 +1,6 @@
 package com.access.business.quality.student.service;
 
+import com.access.business.academic.exam.mapper.ExamMapper;
 import com.access.business.access.repository.RoleRepository;
 import com.access.business.access.repository.UserRepository;
 import com.access.business.quality.student.mapper.StudentMapper;
@@ -7,11 +8,14 @@ import com.access.business.quality.transact.mapper.ClassesMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.teach.base.BaseService;
+import com.teach.entity.academic.exam.Exam;
 import com.teach.entity.access.Role;
 import com.teach.entity.access.User;
 import com.teach.entity.quality.student.Student;
 import com.teach.entity.quality.transact.Classes;
 import com.teach.entity.vo.UserStudentVo;
+import com.teach.error.CommonException;
 import com.teach.response.PageResult;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
@@ -28,7 +32,7 @@ import java.util.*;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class StudentService {
+public class StudentService extends BaseService {
 
     @Autowired
     private IdWorker idWorker;
@@ -42,6 +46,8 @@ public class StudentService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private ExamMapper examMapper;
 
     @Autowired
     private ClassesMapper classesMapper;
@@ -86,7 +92,24 @@ public class StudentService {
 
     }
 
-    public Result save(UserStudentVo vo) {
+    public Result save(UserStudentVo vo) throws CommonException {
+
+
+        String classesId = vo.getClassesId();
+
+        //通过班级id查询班级所有的试卷
+        QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("classes_id",classesId);
+        List<Exam> exams = examMapper.selectList(queryWrapper);
+
+        if(exams != null && exams.size() > 0){
+            for (Exam exam : exams) {
+                String examStatus = exam.getExamStatus();
+                if(!"4".equals(examStatus)){
+                    throw new CommonException(ResultCode.INSERT_STUDENT_ERROR_IS_CLASSES_HAS_EXAMS_ING);
+                }
+            }
+        }
 
         User user = new User();
         Student student = new Student();
@@ -116,7 +139,7 @@ public class StudentService {
             userRepository.save(user);
 
 
-            String classesId = student.getClassesId();
+            //String classesId = student.getClassesId();
             Classes classes = classesMapper.selectById(classesId);
             student.setClassesName(classes.getClassesName());
 
@@ -152,6 +175,9 @@ public class StudentService {
 
         if(roles != null && roles.size() > 0){
             userTarget.setRoles(roles);
+            userTarget.setModifyId(currentUser().getId());
+            userTarget.setModifyUser(currentUser().getNickName());
+            userTarget.setModifyTime(new Date());
             userRepository.save(userTarget);
             studentMapper.updateById(studentTarget);
             return Result.SUCCESS();

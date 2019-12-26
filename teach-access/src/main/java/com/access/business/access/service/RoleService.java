@@ -2,6 +2,7 @@ package com.access.business.access.service;
 
 import com.access.business.access.repository.PermissionRepository;
 import com.access.business.access.repository.RoleRepository;
+import com.teach.base.BaseService;
 import com.teach.entity.access.Permission;
 import com.teach.entity.access.Role;
 import com.teach.response.PageResult;
@@ -22,7 +23,7 @@ import java.util.*;
 @Service
 @Transactional
 @SuppressWarnings("all")
-public class RoleService {
+public class RoleService extends BaseService {
 
     @Autowired
     private IdWorker idWorker;
@@ -50,6 +51,10 @@ public class RoleService {
 
         role.setCreateTime(new Date());
         role.setId(idWorker.nextId() + "");
+        role.setModifyId(currentUser().getId());
+        role.setModifyTime(new Date());
+        role.setModifyUser(currentUser().getNickName());
+
 
         Set<Permission> permissions = new HashSet<>();
         for(String permissionId : role.getPermissionIds().split(",")){
@@ -71,6 +76,11 @@ public class RoleService {
         Role target = roleRepository.findById(role.getId()).get();
 
         BeanUtils.copyProperties(role,target);
+
+        target.setModifyUser(currentUser().getNickName());
+        target.setModifyTime(new Date());
+        target.setModifyId(currentUser().getId());
+
 
         //处理role和permission中间表关系数据
         String permissionIds = role.getPermissionIds();
