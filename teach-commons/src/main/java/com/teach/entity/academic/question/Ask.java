@@ -45,4 +45,6 @@ public class Ask implements Serializable {
     private String modifyUser;
     private String modifyId;
 
+    private String enVisible;
+
 }

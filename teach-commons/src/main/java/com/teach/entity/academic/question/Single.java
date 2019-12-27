@@ -53,4 +53,6 @@ public class Single implements Serializable {
     private Date modifyTime;
     private String modifyUser;
     private String modifyId;
+
+    private String enVisible; //学生刷题时,是否屏蔽 1默认初始化 2已答题 3屏蔽
 }

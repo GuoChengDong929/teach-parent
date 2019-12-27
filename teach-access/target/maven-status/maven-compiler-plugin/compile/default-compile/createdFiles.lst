@@ -1,5 +1,6 @@
 com\access\business\academic\question\mapper\UpperMapper.class
 com\access\business\log\controller\OperationLogController.class
+com\access\business\academic\supervise\mapper\StudentSelectionMapper.class
 com\access\business\academic\curriculum\service\CurriculumService.class
 com\access\business\log\mapper\ErrorLogMapper.class
 com\access\business\access\service\UserService.class
@@ -19,9 +20,11 @@ com\access\business\student\mapper\SingleResultMapper.class
 com\access\business\access\repository\RoleRepository.class
 com\access\business\access\controller\UserController.class
 com\access\business\log\service\ErrorLogService.class
+com\access\business\academic\supervise\mapper\StudentSingleMapper.class
 com\access\business\access\service\PermissionService$1.class
 com\access\business\academic\exam\service\ExamService.class
 com\access\business\quality\student\controller\StudentController.class
+com\access\business\academic\supervise\mapper\StudentAskMapper.class
 com\access\business\academic\curriculum\mapper\ChapterMapper.class
 com\access\business\access\repository\UserRepository.class
 com\access\business\log\controller\ErrorLogController.class
@@ -37,6 +40,7 @@ com\access\business\quality\transact\service\ClassesService.class
 com\access\business\academic\exam\mapper\AskResultMapper.class
 com\access\business\system\dictionaries\controller\DictionariesController.class
 com\access\business\academic\curriculum\mapper\CurriculumMapper.class
+com\access\business\academic\supervise\mapper\StudentUpperMapper.class
 com\access\business\quality\transact\mapper\ClassesMapper.class
 com\access\business\academic\curriculum\controller\ChapterController.class
 com\access\business\student\service\StudentExamService.class
@@ -44,6 +48,7 @@ com\access\business\access\service\PermissionService$2.class
 com\access\config\CorsConfiguration.class
 com\access\business\academic\supervise\service\SuperviseService.class
 com\access\business\work\company\service\CompanyService.class
+com\access\business\student\controller\StudentBrushController.class
 com\access\business\access\controller\LoginController.class
 com\access\business\quality\student\service\StudentService.class
 com\access\business\access\service\DepartmentService.class
@@ -65,3 +70,4 @@ com\access\business\work\company\mapper\CompanyMapper.class
 com\access\config\AccessRealm.class
 com\access\business\academic\curriculum\controller\CurriculumController.class
 com\access\business\academic\supervise\controller\SuperviseController.class
+com\access\business\student\service\StudentBrushService.class

@@ -13,6 +13,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teac
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\vo\UserTeacherVo.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\utils\AddressUtil.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\response\ResultCode.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\student\brush\StudentSelection.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\aop\OperationProperties.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\academic\exam\Exam.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\response\ProfileResult.java
@@ -21,6 +22,8 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teac
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\quality\transact\Classes.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\aop\Log.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\utils\DateUtils.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\student\brush\StudentAsk.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\student\brush\StudentSingle.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\academic\exam\SelectionResult.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\shiro\ParentRealm.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\access\Role.java
@@ -56,5 +59,6 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teac
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\response\PageResult.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\base\BaseController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\access\Department.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\student\brush\StudentUpper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\entity\vo\UserStudentVo.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-commons\src\main\java\com\teach\shiro\CORSAuthenticationFilter.java

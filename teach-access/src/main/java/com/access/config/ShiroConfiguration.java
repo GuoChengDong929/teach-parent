@@ -77,6 +77,8 @@ public class ShiroConfiguration {
         // 静态资源
         //filterMap.put("/static/**", "anon");
 
+        // 放行追踪
+        filterMap.put("/actuator/**","anon");
 
         // 登录方法
         filterMap.put("/sys/login", "anon");
@@ -137,6 +139,7 @@ public class ShiroConfiguration {
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost("192.168.18.250");
+        //redisManager.setHost("192.168.223.129");
         redisManager.setPort(6379);
 
         redisManager.setPassword("dmcn");

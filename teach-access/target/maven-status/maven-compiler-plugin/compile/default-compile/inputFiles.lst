@@ -7,6 +7,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\service\StudentExamService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\controller\ChapterController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\service\RoleService.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\mapper\StudentSingleMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\SelectionMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\repository\RoleRepository.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\config\CorsConfiguration.java
@@ -20,6 +21,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\mapper\TeacherMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\controller\CurriculumController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\repository\TeacherRepository.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\controller\StudentBrushController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\transact\mapper\ClassesMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\DepartmentController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\service\ChapterService.java
@@ -27,6 +29,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\controller\ErrorLogController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\transact\service\ClassesService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\controller\LoginController.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\mapper\StudentUpperMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\controller\ExamController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\service\PermissionService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\mapper\UpperMapper.java
@@ -41,10 +44,12 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\config\AccessRealm.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\controller\TeacherController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\mapper\OperationLogMapper.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\mapper\StudentSelectionMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\quality\teahcer\service\TeacherService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\access\service\DepartmentService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\work\company\mapper\CompanyMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\service\ExamService.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\mapper\StudentAskMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\question\controller\QuestionController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\exam\mapper\ExamMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\log\service\ErrorLogService.java
@@ -59,6 +64,7 @@ D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\acces
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\mapper\StudentExamMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\curriculum\mapper\CurriculumMapper.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\mapper\SelectionResultMapper.java
+D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\service\StudentBrushService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\work\company\service\CompanyService.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\academic\supervise\controller\SuperviseController.java
 D:\new-jwxt-workspace\new-jwxt\teach-parent\teach-access\src\main\java\com\access\business\student\mapper\SingleResultMapper.java

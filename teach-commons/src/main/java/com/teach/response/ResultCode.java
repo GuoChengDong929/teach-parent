@@ -51,9 +51,14 @@ public enum ResultCode {
 
     // 试题 question
     SINGLE_SIZE_OUTPUT(false,70001,"所选单选题的数量大于题库总数量"),
-    SELECTION_SIZE_OUTPUT(false,70002,"所选多选题的数量大于题库总数量"),
-    ASK_SIZE_OUTPUT(false,70003,"所选问答题的数量大于题库总数量"),
-    EXECL_DATA_IS_NULL(false,7004,"没有任何数据可供导出");
+    SINGLE_IS_ZERO(false,70002,"所选章节中的单选题库没有任何试题"),
+    SELECTION_SIZE_OUTPUT(false,70003,"所选多选题的数量大于题库总数量"),
+    SELECTION_IS_ZERO(false,70004,"所选章节中的多选题库没有任何试题"),
+    ASK_SIZE_OUTPUT(false,70005,"所选问答题的数量大于题库总数量"),
+    EXECL_DATA_IS_NULL(false,70006,"没有任何数据可供导出"),
+    ASK_IS_ZERO(false,70007,"所选章节中的问答题库没有任何试题"),
+    UPPER_IS_ZERO(false,70008,"所选章节中的上机题库没有任何试题"),
+    OK_IS_ZERO(false,70009,"所选章节中的已答试题为空");
 
     //---权限操作返回码----
     //---其他操作返回码----

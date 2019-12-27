@@ -273,6 +273,7 @@ public class QuestionService extends BaseService {
                 single.setModifyId(currentUser().getId());
                 single.setModifyUser(currentUser().getNickName());
                 single.setModifyTime(new Date());
+                single.setEnVisible("1");
                 singleMapper.insert(single);
 
                 return Result.SUCCESS();
@@ -287,6 +288,7 @@ public class QuestionService extends BaseService {
                 selection.setModifyId(currentUser().getId());
                 selection.setModifyUser(currentUser().getNickName());
                 selection.setModifyTime(new Date());
+                selection.setEnVisible("1");
                 selectionMapper.insert(selection);
                 return Result.SUCCESS();
             case "3":
@@ -300,6 +302,7 @@ public class QuestionService extends BaseService {
                 ask.setModifyId(currentUser().getId());
                 ask.setModifyUser(currentUser().getNickName());
                 ask.setModifyTime(new Date());
+                ask.setEnVisible("1");
                 askMapper.insert(ask);
                 return Result.SUCCESS();
             case "4":
@@ -470,7 +473,7 @@ public class QuestionService extends BaseService {
                 upperTarget.setModifyId(currentUser().getId());
                 upperTarget.setModifyTime(new Date());
                 upperTarget.setModifyUser(currentUser().getNickName());
-
+                upperTarget.setEnVisible("1");
                 upperMapper.updateById(upperTarget);
 
                 return Result.SUCCESS();

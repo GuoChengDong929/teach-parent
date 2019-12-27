@@ -37,14 +37,27 @@ public class Chapter implements Serializable {
     @TableField("create_time")
     private Date createTime;
 
+
+
+
+
+    @TableField(exist = false)
+    private Integer singleCount;
+
+    @TableField(exist = false)
+    private Integer selectionCount;
+
+    @TableField(exist = false)
+    private Integer askCount;
+
+    @TableField(exist = false)
+    private Integer upperCount;
+
     @TableField(exist = false)
     private Integer total;
 
     @TableField(exist = false)
-    private Integer okCount;
-
-    @TableField(exist = false)
-    private Integer noCount;
+    private Integer okCount; //已答题数量
 
 
     private Date modifyTime;

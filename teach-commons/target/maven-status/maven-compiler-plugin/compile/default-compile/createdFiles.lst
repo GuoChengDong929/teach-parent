@@ -1,10 +1,12 @@
 com\teach\base\BaseService.class
 com\teach\utils\DateUtils.class
 com\teach\shiro\ShiroUserFilter.class
+com\teach\entity\student\brush\StudentSelection.class
 com\teach\entity\vo\AskVo.class
 com\teach\entity\vo\AskVo$AskVoBuilder.class
 com\teach\response\Result.class
 com\teach\utils\SftpUtil.class
+com\teach\entity\student\brush\StudentAsk.class
 com\teach\shiro\ParentRealm.class
 com\teach\entity\vo\GoBackVo$GoBackVoBuilder.class
 com\teach\entity\vo\UserTeacherVo$UserTeacherVoBuilder.class
@@ -29,6 +31,7 @@ com\teach\entity\log\SysDataLog$SysDataLogBuilder.class
 com\teach\response\ResultCode.class
 com\teach\entity\academic\exam\Score.class
 com\teach\entity\vo\AskResultVo$AskResultVoBuilder.class
+com\teach\entity\student\brush\StudentUpper.class
 com\teach\entity\log\SysErrorLog.class
 com\teach\entity\academic\exam\AskResult.class
 com\teach\base\ErrorController.class
@@ -52,6 +55,7 @@ com\teach\entity\academic\exam\Exam$ExamBuilder.class
 com\teach\utils\HttpContextUtil.class
 com\teach\entity\vo\StudentScoreInfoVo.class
 com\teach\entity\academic\question\Single$SingleBuilder.class
+com\teach\entity\student\brush\StudentSingle.class
 com\teach\entity\academic\question\Upper$UpperBuilder.class
 com\teach\entity\quality\student\Student$StudentBuilder.class
 com\teach\utils\PoiUtil.class

@@ -52,4 +52,6 @@ public class Selection implements Serializable {
     private Date modifyTime;
     private String modifyUser;
     private String modifyId;
+
+    private String enVisible;
 }
