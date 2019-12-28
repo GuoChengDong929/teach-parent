@@ -83,16 +83,6 @@ public class QuestionService extends BaseService {
 
     public Result list(Map<String, Object> map) {
 
-
-        byte[] bytes = MacAddressUtil.bestAvailableMac();
-
-        String s = MacAddressUtil.formatAddress(bytes);
-        System.out.println("bestAvailableMac:"+ s);
-
-        byte[] bytes1 = MacAddressUtil.defaultMachineId();
-        String s1 = MacAddressUtil.formatAddress(bytes1);
-        System.out.println("defaultMachineId:" + s1);
-
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
 

@@ -8,6 +8,7 @@ import com.access.business.academic.supervise.mapper.StudentAskMapper;
 import com.access.business.academic.supervise.mapper.StudentSelectionMapper;
 import com.access.business.academic.supervise.mapper.StudentSingleMapper;
 import com.access.business.academic.supervise.mapper.StudentUpperMapper;
+import com.access.business.access.repository.UserRepository;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,6 +19,7 @@ import com.teach.entity.academic.question.Ask;
 import com.teach.entity.academic.question.Selection;
 import com.teach.entity.academic.question.Single;
 import com.teach.entity.academic.question.Upper;
+import com.teach.entity.access.User;
 import com.teach.entity.student.brush.StudentAsk;
 import com.teach.entity.student.brush.StudentSelection;
 import com.teach.entity.student.brush.StudentSingle;
@@ -67,6 +69,9 @@ public class StudentBrushService extends BaseService {
 
     @Autowired
     private StudentUpperMapper studentUpperMapper;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public Result getQuestionsByChapter(Map<String, Object> map) throws CommonException {
@@ -298,6 +303,19 @@ public class StudentBrushService extends BaseService {
     }
 
     public Result updateOk(Map<String, Object> map) {
+
+        String currentId = currentUser().getId();
+
+        User user = userRepository.findById(currentId).get();
+
+        String userType = user.getType();
+
+        String level = user.getLevel();
+
+        if("1".equals(userType) && "user".equals(level)){
+            return Result.ERROR();
+        }
+
 
         String type = map.get("type").toString();
 

@@ -155,17 +155,48 @@ public class StudentService extends BaseService {
 
     }
 
-    public Result update(UserStudentVo vo) {
+    public Result update(UserStudentVo vo) throws CommonException {
+
         User user = new User();
         Student student = new Student();
         BeanUtils.copyProperties(vo,user);
         BeanUtils.copyProperties(vo,student);
 
+        //查看当前修改的班级是否有未结束的试卷,如果有,则不让添加
+        String newClassesId = vo.getClassesId();
+
+        QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("classes_id",newClassesId);
+        List<Exam> exams = examMapper.selectList(queryWrapper);
+
+        if(exams != null && exams.size() > 0){
+            for (Exam exam : exams) {
+                String examStatus = exam.getExamStatus();
+                if(!"4".equals(examStatus)){
+                    throw new CommonException(ResultCode.INSERT_STUDENT_ERROR_IS_CLASSES_HAS_EXAMS_ING);
+                }
+            }
+        }
+
+
+
         Student studentTarget = studentMapper.selectById(user.getId());
         User userTarget = userRepository.findById(user.getId()).get();
 
+
+        String classesId = student.getClassesId();
+
+
+
+
+
         BeanUtils.copyProperties(student,studentTarget);
         BeanUtils.copyProperties(user,userTarget);
+
+        Classes classes = classesMapper.selectById(classesId);
+        String classesName = classes.getClassesName();
+
+        studentTarget.setClassesName(classesName);
 
         Set<Role> roles = new HashSet<>();
         for (String roleId : user.getRoleIds().split(",")) {

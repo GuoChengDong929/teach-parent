@@ -35,7 +35,7 @@ public class StudentController {
 
     @RequiresPermissions("api-student-update")
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public Result update(@RequestBody UserStudentVo vo){
+    public Result update(@RequestBody UserStudentVo vo) throws CommonException {
         return studentService.update(vo);
     }
 }
