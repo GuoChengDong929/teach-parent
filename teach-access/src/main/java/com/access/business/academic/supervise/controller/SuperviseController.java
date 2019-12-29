@@ -25,10 +25,25 @@ public class SuperviseController {
     private SuperviseService superviseService;
 
     //通过日期区间 班级id 来查看成绩监测-日测成绩的数据列表
+    @Log("成绩监测:获取日测成绩")
     @RequestMapping(value = "/getScoresByDate",method = RequestMethod.POST)
     public Result getScoresByDate(@RequestBody Map<String,Object> map) throws ParseException {
         return superviseService.getScoresByDate(map);
     }
+
+
+    @Log("成绩监测:获取周测成绩")
+    @RequestMapping(value = "/getWeekScoresByDate",method = RequestMethod.POST)
+    public Result getWeekScoresByDate(@RequestBody Map<String,Object> map) throws ParseException {
+        return superviseService.getWeekScoresByDate(map);
+    }
+
+    @Log("成绩监测:获取月考成绩")
+    @RequestMapping(value = "/getMonthScoresByDate",method = RequestMethod.POST)
+    public Result getMonthScoresByDate(@RequestBody Map<String,Object> map) throws ParseException {
+        return superviseService.getMonthScoresByDate(map);
+    }
+
 
     //通过成绩监测-日测成绩 来查看学生个人的总体成绩列表
     @RequestMapping(value = "/getStudentScores",method = RequestMethod.POST)
