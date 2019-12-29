@@ -17,6 +17,7 @@ import com.teach.entity.vo.StudentScoreVo;
 import com.teach.entity.vo.StudentVo;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
+import com.teach.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,60 +50,45 @@ public class SuperviseService {
 
     public Result getScoresByDate(Map<String, Object> map) throws ParseException {
 
-        StudentScoreVo vo = new StudentScoreVo();
-
         String classesId = map.get("classesId").toString();
 
-        String examType = map.get("type").toString(); //1日测  2周测  3月考
-
-        String[] str = map.get("date").toString().split("~");
-
-        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(str[0]);
-        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(str[1]);
+        List<String> date = (List<String>) map.get("date");
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(0));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(1));
 
         //查询班级这个月所有的考试,获得examTime 用于table表格的表头
-
         QueryWrapper<Exam> examQueryWrapper = new QueryWrapper<>();
-
         examQueryWrapper.eq("classes_id",classesId);
         examQueryWrapper.between("exam_time",startDate,endDate);
-        examQueryWrapper.eq("exam_type",examType);
+        examQueryWrapper.eq("exam_type","1");
+        examQueryWrapper.orderByAsc("exam_time");
         List<Exam> exams = examMapper.selectList(examQueryWrapper);
 
+        //处理表头
         List<String> headers = new ArrayList<>();
-
         if(exams != null && exams.size() > 0){
             for (Exam exam : exams) {
-                String format = new SimpleDateFormat("yyyy-MM-dd").format(exam.getExamTime());
-                headers.add(format);
+                Date examTime = exam.getExamTime();
+                int day = DateUtils.getDateOfDay(examTime);
+                headers.add(day + "日");
             }
         }
 
-        vo.setHeaders(headers);
-
-
         List<StudentVo> studentVos = new ArrayList<>();
-
-
+        
         //查询班级所有学生
         QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
         studentQueryWrapper.eq("classes_id",classesId);
         List<Student> students = studentMapper.selectList(studentQueryWrapper);
-
-        //获得单个学生 这个时期的所有成绩
-
-
-
+        
+        //获得单个学生 日期范围内的所有成绩
         if(students != null && students.size() > 0){
             for (Student student : students) {
-
                 User user = userRepository.findById(student.getId()).get();
-
                 StudentVo studentVo = new StudentVo();
 
                 studentVo.setStudentId(student.getId());
                 studentVo.setNickName(user.getNickName());
-
 
                 List<Integer> resultScores = new ArrayList<>();
 
@@ -110,6 +96,7 @@ public class SuperviseService {
                     studentVo.setExamId(exam.getId());
                     String studentId = student.getId();
                     String examId = exam.getId();
+
                     QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
                     scoreQueryWrapper.eq("student_id",studentId);
                     scoreQueryWrapper.eq("exam_id",examId);
@@ -128,35 +115,36 @@ public class SuperviseService {
                     }
                 }
 
-
                 //求平均分
                 int size = resultScores.size();
 
                 if(size == 0){
-                    studentVo.setAvg(0);
-                } else {
+                    studentVo.setAvg(0D);
+                }else{
                     int sum = 0;
-                    for (Integer score : resultScores) {
-                        if(score == -1){
+                    for (Integer resultScore : resultScores) {
+                        if(resultScore == -1){
                             continue;
                         }else{
-                            sum += score;
+                            sum += resultScore;
                         }
                     }
-                    studentVo.setAvg(sum / size);
+                    int avg = sum / size;
+                    studentVo.setAvg((double) avg);
                 }
-
 
                 studentVo.setScores(resultScores);
                 studentVos.add(studentVo);
             }
-
         }
-        vo.setVos(studentVos);
 
+        StudentScoreVo vo = new StudentScoreVo();
+        vo.setHeaders(headers);
+        vo.setVos(studentVos);
 
         return new Result(ResultCode.SUCCESS,vo);
     }
+
 
     public Result getStudentScores(Map<String, Object> map) throws ParseException {
         String studentId = map.get("studentId").toString();

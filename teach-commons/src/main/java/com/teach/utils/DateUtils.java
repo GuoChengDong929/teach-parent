@@ -12,6 +12,13 @@ import static com.fasterxml.jackson.databind.util.ISO8601Utils.format;
 
 public class DateUtils {
 
+
+    public static int getDateOfDay(Date date){
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        return instance.get(Calendar.DATE);
+    }
+
     public static Date beforeOneMonth(String str) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(str);

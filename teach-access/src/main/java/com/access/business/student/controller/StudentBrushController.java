@@ -21,6 +21,7 @@ public class StudentBrushController {
     @Autowired
     private StudentBrushService studentBrushService;
 
+    @Log("学生刷题:通过章节ID,获得章节下的所有试题")
     @RequestMapping(value = "/getQuestionsByChapter",method = RequestMethod.POST)
     public Result getQuestionsByChapter(@RequestBody Map<String,Object> map) throws CommonException {
         return studentBrushService.getQuestionsByChapter(map);

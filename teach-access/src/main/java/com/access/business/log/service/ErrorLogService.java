@@ -100,12 +100,27 @@ public class ErrorLogService extends BaseService {
     }
 
     public Result list(Map<String, Object> map) {
+
+
+
+
+
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
 
         IPage<SysErrorLog> iPage = new Page<>(page,size);
 
+        Object modifyUser = map.get("modifyUser");
+        Object operation = map.get("operation");
+
+
+
         QueryWrapper<SysErrorLog> queryWrapper = new QueryWrapper<>();
+
+        if(modifyUser != null) queryWrapper.like("modify_user",modifyUser.toString());
+
+        if(operation != null) queryWrapper.like("operation",operation.toString());
+
         queryWrapper.orderByDesc("create_time");
 
         IPage<SysErrorLog> result = errorLogMapper.selectPage(iPage, queryWrapper);

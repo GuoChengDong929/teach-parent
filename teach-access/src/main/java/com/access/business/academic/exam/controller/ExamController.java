@@ -1,6 +1,7 @@
 package com.access.business.academic.exam.controller;
 
 import com.access.business.academic.exam.service.ExamService;
+import com.teach.aop.Log;
 import com.teach.entity.academic.exam.Exam;
 import com.teach.response.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,39 +17,46 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
+    @Log("教师端:试题列表")
     @RequestMapping(value = "/getExamList",method = RequestMethod.POST)
     public Result list(@RequestBody Map<String,Object> map){
         return examService.list(map);
     }
 
+    @Log("教师端:保存试题")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public Result save(@RequestBody Map<String,Object> map) throws Exception {
         return examService.save(map);
     }
 
+    @Log("教师端:开始考试")
     @RequestMapping(value = "/start",method = RequestMethod.POST)
     public Result start(@RequestBody Exam exam){
         return examService.start(exam);
     }
 
     /**开始考试前,确认考试状态没被定时器修改*/
+    @Log("教师端:考试前确认考试状态没有被定时器修改")
     @RequestMapping(value = "/findById/{id}",method = RequestMethod.GET)
     public Result findById(@PathVariable("id")String id){
         return examService.findById(id);
     }
 
     /**查看试卷(老师),考试试卷(学生) */
+    @Log("教师端:学生端:查看试卷")
     @RequestMapping(value = "/findExamByCache/{id}",method = RequestMethod.GET)
     public Result findExamByCache(@PathVariable("id")String id){
         return examService.findExamByCache(id);
     }
 
     /**试卷讲解,带答案*/
+    @Log("教师端:试卷讲解,带答案")
     @RequestMapping(value = "/findExamByDBHasAnswer",method = RequestMethod.POST)
     public Result findExamByDBHasAnswer(@RequestBody Exam exam){
         return examService.findExamByDBHasAnswer(exam);
     }
 
+    @Log("教师端:通过试卷ID查询当前试卷下所有学生的成绩")
     @RequestMapping(value = "/getStudentListByExam",method = RequestMethod.POST)
     public Result getStudentListByExam(@RequestBody Exam exam){
         return examService.getStudentListByExam(exam);

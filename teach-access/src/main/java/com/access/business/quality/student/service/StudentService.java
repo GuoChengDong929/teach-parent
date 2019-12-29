@@ -24,9 +24,14 @@ import com.teach.utils.PinYinUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 @Service
@@ -53,14 +58,21 @@ public class StudentService extends BaseService {
     private ClassesMapper classesMapper;
 
     public Result list(Map<String, Object> map) {
+
+        //防止用户不选择班级,直接通过输入学生姓名进行查询
+        if(map.get("classesId") == null) return Result.FAIL();
+
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
 
         String classesId = map.get("classesId").toString();
 
+
+
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("classes_id",classesId);
 
+        Object nickName = map.get("nickName");
 
         IPage<Student> iPage = new Page<>(page,size);
 
@@ -75,6 +87,7 @@ public class StudentService extends BaseService {
         if(students != null && students.size() > 0){
             for (Student student : students) {
                 String id = student.getId();
+
                 User user = userRepository.findById(id).get();
 
                 UserStudentVo vo = new UserStudentVo();
@@ -85,18 +98,29 @@ public class StudentService extends BaseService {
             }
         }
 
+        if(nickName != null){
+            List<UserStudentVo> list = new ArrayList<>();
+            for (UserStudentVo vo : vos) {
+                if(vo.getNickName().contains(nickName.toString())){
+                    list.add(vo);
+                }
+            }
+
+            PageResult<UserStudentVo> pageResult = new PageResult<>(total,list);
+            return new Result(ResultCode.SUCCESS,pageResult);
+        }
+
+
         PageResult<UserStudentVo> pageResult = new PageResult<>(total,vos);
-
-
         return new Result(ResultCode.SUCCESS,pageResult);
+
+
 
     }
 
     public Result save(UserStudentVo vo) throws CommonException {
 
-
         String classesId = vo.getClassesId();
-
         //通过班级id查询班级所有的试卷
         QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("classes_id",classesId);

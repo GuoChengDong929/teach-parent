@@ -59,23 +59,25 @@ public class QuestionController {
         return questionService.update(map);
     }
 
+    @Log("上传文件,新增上机题")
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     public Result upload(@RequestParam("file") MultipartFile file) throws IOException {
         return questionService.upload(file.getOriginalFilename(),file.getInputStream());
     }
 
+    @Log("通过章节ID和试题类型获取试题集合")
     @RequestMapping(value = "/getQuestionsByChapterIdsAndQuestionTypeIds",method = RequestMethod.POST)
     public Result getQuestionsByChapterIdsAndQuestionTypeIds(@RequestBody Map<String,Object> map){
         return questionService.getQuestionsByChapterIdsAndQuestionTypeIds(map);
     }
 
+    @Log("导出试题集合")
     @RequestMapping(value = "/exportData",method = RequestMethod.POST)
     public String exportExcel(HttpServletResponse response, @RequestBody Map<String,Object> map) throws Exception{
-
-
         return questionService.exportData(map,response);
     }
 
+    @Log("上传试题集合")
     @RequestMapping(value = "/uploadQuestion",method = RequestMethod.POST)
     public Result uploadQuestion(@RequestParam("file") MultipartFile file) throws IOException {
         return  questionService.uploadQuestion(file);

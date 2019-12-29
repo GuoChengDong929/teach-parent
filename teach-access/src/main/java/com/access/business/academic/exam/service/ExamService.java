@@ -85,15 +85,22 @@ public class ExamService extends BaseService {
 
     public Result list(Map<String, Object> map) {
 
+        Object examTime = map.get("examTime");
+
+
+
+
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
         IPage<Exam> iPage = new Page<>(page,size);
 
         QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
         if(map.get("classesId") != null) queryWrapper.eq("classes_id",map.get("classesId").toString());
+        if(map.get("classesName") != null) queryWrapper.like("classes_name",map.get("classesName").toString());
         if(map.get("examName") != null) queryWrapper.like("exam_name",map.get("examName").toString());
         if(map.get("examType") != null) queryWrapper.eq("exam_type",map.get("examType").toString());
         if(map.get("examStatus") != null) queryWrapper.eq("exam_status",map.get("examStatus").toString());
+
 
         if(map.get("questionType") != null && map.get("questionType").toString().equals("1")){
             queryWrapper.ne("question_type_ids","4");

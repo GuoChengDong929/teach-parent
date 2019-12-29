@@ -48,12 +48,27 @@ public class OperationLogService {
 
 
     public Result list(Map<String, Object> map) {
+
+        Object username = map.get("username");
+
+        QueryWrapper<SysOperationLog> queryWrapper = new QueryWrapper<>();
+
+        if(username != null){
+            queryWrapper.like("username",username.toString());
+        }
+
+        Object operation = map.get("operation");
+
+        if(operation != null){
+            queryWrapper.like("operation",operation.toString());
+        }
+
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
 
         IPage<SysOperationLog> iPage = new Page<>(page,size);
 
-        QueryWrapper<SysOperationLog> queryWrapper = new QueryWrapper<>();
+
         queryWrapper.orderByDesc("create_time");
 
 

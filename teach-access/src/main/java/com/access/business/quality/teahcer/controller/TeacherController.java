@@ -1,6 +1,7 @@
 package com.access.business.quality.teahcer.controller;
 
 import com.access.business.quality.teahcer.service.TeacherService;
+import com.teach.aop.Log;
 import com.teach.response.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ public class TeacherController {
     private TeacherService teacherService;
 
     //查询班级列表中显示的教员,助教,班主任的数据集合
+    @Log("显示教员,助教,班主任的数据集合")
     @RequestMapping(value = "/findTeachersByJobTitle",method = RequestMethod.GET)
     public Result findTeachersByJobTitle(){
         return teacherService.findTeachersByJobTitle();
