@@ -75,6 +75,7 @@ com\teach\entity\vo\StudentVo.class
 com\teach\entity\academic\curriculum\Chapter$ChapterBuilder.class
 com\teach\entity\academic\exam\SelectionResult$SelectionResultBuilder.class
 com\teach\entity\academic\exam\SingleResult.class
+com\teach\entity\vo\ComparisonVo.class
 com\teach\entity\quality\transact\Teacher.class
 com\teach\utils\PinYinUtil.class
 com\teach\entity\academic\question\Ask.class

@@ -1,5 +1,6 @@
 package com.teach.entity.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.teach.entity.access.Role;
 import lombok.*;
 
@@ -67,5 +68,14 @@ public class UserStudentVo implements Serializable {
     private String classesId;
 
     private String classesName;
+
+    @TableField(exist = false)
+    private Integer creditPlus;      //加分项
+
+    @TableField(exist = false)
+    private Integer creditLess;      //减分项
+
+    @TableField(exist = false)
+    private Integer creditTotal;     //总学分
 
 }

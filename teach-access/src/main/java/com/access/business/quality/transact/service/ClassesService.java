@@ -3,6 +3,7 @@ package com.access.business.quality.transact.service;
 import com.access.business.academic.curriculum.mapper.CurriculumMapper;
 import com.access.business.access.repository.UserRepository;
 import com.access.business.quality.student.mapper.StudentMapper;
+import com.access.business.quality.teahcer.mapper.TeacherMapper;
 import com.access.business.quality.transact.mapper.ClassesMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,6 +14,7 @@ import com.teach.entity.academic.curriculum.Curriculum;
 import com.teach.entity.access.User;
 import com.teach.entity.quality.student.Student;
 import com.teach.entity.quality.transact.Classes;
+import com.teach.entity.quality.transact.Teacher;
 import com.teach.response.PageResult;
 import com.teach.response.Result;
 import com.teach.response.ResultCode;
@@ -45,6 +47,9 @@ public class ClassesService extends BaseService {
 
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private TeacherMapper teacherMapper;
 
     public Result list(Map<String, Object> map) {
 
@@ -212,5 +217,31 @@ public class ClassesService extends BaseService {
         classesMapper.updateById(classes);
         return Result.SUCCESS();
 
+    }
+
+    public Result getClassesListById() {
+        String id = currentUser().getId();
+        Teacher teacher = teacherMapper.selectById(id);
+        String jobTitle = teacher.getJobTitle();
+
+        QueryWrapper<Classes> queryWrapper = new QueryWrapper<>();
+        if("教员".equals(jobTitle)){
+            queryWrapper.eq("jy_id",id);
+        }else if("班主任".equals(jobTitle)){
+            queryWrapper.eq("bzr_id",id);
+        }else {
+            return new Result(ResultCode.Not_Classes_Id);
+        }
+
+        queryWrapper.orderByDesc("create_time");
+        List<Classes> classes = classesMapper.selectList(queryWrapper);
+        return new Result(ResultCode.SUCCESS,classes);
+
+
+    }
+
+    public Result getClassesName() {
+        List<Classes> classes = classesMapper.selectList(null);
+        return new Result(ResultCode.SUCCESS,classes);
     }
 }

@@ -2,22 +2,19 @@ package com.access.business.quality.student.controller;
 
 import com.access.business.quality.student.service.StudentService;
 import com.teach.aop.Log;
+import com.teach.entity.quality.student.Student;
 import com.teach.entity.vo.UserStudentVo;
 import com.teach.error.CommonException;
 import com.teach.response.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-
 
     @Autowired
     private StudentService studentService;
@@ -42,4 +39,10 @@ public class StudentController {
     public Result update(@RequestBody UserStudentVo vo) throws CommonException {
         return studentService.update(vo);
     }
+
+    @RequestMapping(value = "/getStudentListByClassesId",method = RequestMethod.POST)
+    public Result getStudentListByClassesId(@RequestBody Map<String,Object> map){
+        return studentService.getStudentListByClassesId(map);
+    }
+
 }

@@ -138,11 +138,11 @@ public class ShiroConfiguration {
      */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("192.168.18.250");
+        redisManager.setHost("localhost");
         //redisManager.setHost("192.168.223.129");
         redisManager.setPort(6379);
 
-        redisManager.setPassword("dmcn");
+//        redisManager.setPassword("dmcn");
         return redisManager;
     }
 

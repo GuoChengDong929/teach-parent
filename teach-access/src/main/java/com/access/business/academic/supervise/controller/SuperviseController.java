@@ -50,4 +50,25 @@ public class SuperviseController {
     public Result getStudentScores(@RequestBody Map<String,Object> map) throws ParseException {
         return superviseService.getStudentScores(map);
     }
+
+
+    @Log("成绩监测:月考考核对比")
+    @RequestMapping(value = "/comparisonMonth",method = RequestMethod.POST)
+    public Result comparisonMonth(@RequestBody Map<String,Object> map) throws ParseException {
+        return superviseService.comparisonMonth(map);
+    }
+
+    @Log("成绩检测:日测考核对比")
+    @RequestMapping(value = "/comparisonDay",method = RequestMethod.POST)
+    public Result comparisonDay(@RequestBody Map<String,Object> map) throws ParseException {
+        return superviseService.comparisonDay(map);
+    }
+
+    @Log("成绩检测:周测考核对比")
+    @RequestMapping(value = "/comparisonWeek",method = RequestMethod.POST)
+    public Result comparisonWeek(@RequestBody Map<String,Object> map) throws ParseException {
+        return superviseService.comparisonWeek(map);
+    }
+
+
 }

@@ -1,10 +1,6 @@
 package com.teach.base;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.teach.entity.access.User;
-import com.teach.entity.system.dictionaries.Dictionaries;
-import com.teach.response.PageResult;
 import com.teach.response.ProfileResult;
 import org.apache.shiro.SecurityUtils;
 

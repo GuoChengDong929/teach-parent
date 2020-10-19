@@ -12,6 +12,7 @@ import com.teach.entity.academic.exam.Score;
 import com.teach.entity.access.User;
 import com.teach.entity.quality.student.Student;
 
+import com.teach.entity.vo.ComparisonVo;
 import com.teach.entity.vo.StudentScoreInfoVo;
 import com.teach.entity.vo.StudentScoreVo;
 import com.teach.entity.vo.StudentVo;
@@ -383,5 +384,178 @@ public class SuperviseService {
         vo.setVos(studentVos);
 
         return new Result(ResultCode.SUCCESS,vo);
+    }
+
+    public Result comparisonMonth(Map<String, Object> map) throws ParseException {
+
+        String classesId = map.get("classesId").toString();
+
+        List<String> date = (List<String>) map.get("date");
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(0));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(1));
+
+        //查询班级这个月所有的考试,获得examTime 用于table表格的表头
+        QueryWrapper<Exam> examQueryWrapper = new QueryWrapper<>();
+        examQueryWrapper.eq("classes_id",classesId);
+        examQueryWrapper.between("exam_time",startDate,endDate);
+        examQueryWrapper.eq("exam_type","3");
+        examQueryWrapper.orderByAsc("exam_time");
+        List<Exam> exams = examMapper.selectList(examQueryWrapper);
+
+        //获取这个班级的每个月考平均分(这个班的所有学生的某个月的考试成绩总和 / 人数)
+        //查询班级所有学生
+        QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+        studentQueryWrapper.eq("classes_id",classesId);
+        List<Student> students = studentMapper.selectList(studentQueryWrapper);
+
+        //获得单个学生 日期范围内的所有成绩
+        /*if(students != null && students.size() > 0){
+            for (Student student : students) {
+
+                int monthScoreTotalSum = 0;
+
+                for (Exam exam : exams) {
+                    String studentId = student.getId();
+                    String examId = exam.getId();
+
+                    QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
+                    scoreQueryWrapper.eq("student_id",studentId);
+                    scoreQueryWrapper.eq("exam_id",examId);
+
+                    Score score = scoreMapper.selectOne(scoreQueryWrapper);
+
+                    monthScoreTotalSum += score.getScore();
+                }
+
+                double svg = monthScoreTotalSum / students.size();
+
+
+            }
+        }*/
+        List<Date> dates = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
+
+        if(exams != null && exams.size() > 0 && students != null && students.size() > 0){
+            for (Exam exam : exams) {
+                dates.add(exam.getExamTime());
+                double sum = 0;
+
+                for (Student student : students) {
+                    QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
+                    scoreQueryWrapper.eq("student_id",student.getId());
+                    scoreQueryWrapper.eq("exam_id",exam.getId());
+                    Score score = scoreMapper.selectOne(scoreQueryWrapper); //每一个学生的成绩
+
+                    sum += score.getScore();
+                }
+
+                scores.add(sum / students.size());
+            }
+        }
+
+        ComparisonVo comparisonVo = new ComparisonVo();
+        comparisonVo.setDates(dates);
+        comparisonVo.setScores(scores);
+
+        return new Result(ResultCode.SUCCESS,comparisonVo);
+    }
+
+    public Result comparisonDay(Map<String, Object> map) throws ParseException {
+        String classesId = map.get("classesId").toString();
+
+        List<String> date = (List<String>) map.get("date");
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(0));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(1));
+
+        //查询班级这一天的考试,获得examTime 用于table表格的表头
+        QueryWrapper<Exam> examQueryWrapper = new QueryWrapper<>();
+        examQueryWrapper.eq("classes_id",classesId);
+        examQueryWrapper.between("exam_time",startDate,endDate);
+        examQueryWrapper.eq("exam_type","1");
+        examQueryWrapper.orderByAsc("exam_time");
+        List<Exam> exams = examMapper.selectList(examQueryWrapper);
+
+        //获取这个班级的每个月考平均分(这个班的所有学生的某个月的考试成绩总和 / 人数)
+        //查询班级所有学生
+        QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+        studentQueryWrapper.eq("classes_id",classesId);
+        List<Student> students = studentMapper.selectList(studentQueryWrapper);
+
+        List<Date> dates = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
+
+        if(exams != null && exams.size() > 0 && students != null && students.size() > 0){
+            for (Exam exam : exams) {
+                dates.add(exam.getExamTime());
+                double sum = 0;
+
+                for (Student student : students) {
+                    QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
+                    scoreQueryWrapper.eq("student_id",student.getId());
+                    scoreQueryWrapper.eq("exam_id",exam.getId());
+                    Score score = scoreMapper.selectOne(scoreQueryWrapper); //每一个学生的成绩
+
+                    sum += score.getScore();
+                }
+
+                scores.add(sum / students.size());
+            }
+        }
+
+        ComparisonVo comparisonVo = new ComparisonVo();
+        comparisonVo.setDates(dates);
+        comparisonVo.setScores(scores);
+
+        return new Result(ResultCode.SUCCESS,comparisonVo);
+    }
+
+    public Result comparisonWeek(Map<String, Object> map) throws ParseException {
+        String classesId = map.get("classesId").toString();
+
+        List<String> date = (List<String>) map.get("date");
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(0));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(date.get(1));
+
+        //查询班级这一天的考试,获得examTime 用于table表格的表头
+        QueryWrapper<Exam> examQueryWrapper = new QueryWrapper<>();
+        examQueryWrapper.eq("classes_id",classesId);
+        examQueryWrapper.between("exam_time",startDate,endDate);
+        examQueryWrapper.eq("exam_type","2");
+        examQueryWrapper.orderByAsc("exam_time");
+        List<Exam> exams = examMapper.selectList(examQueryWrapper);
+
+        //获取这个班级的每个月考平均分(这个班的所有学生的某个月的考试成绩总和 / 人数)
+        //查询班级所有学生
+        QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+        studentQueryWrapper.eq("classes_id",classesId);
+        List<Student> students = studentMapper.selectList(studentQueryWrapper);
+
+        List<Date> dates = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
+
+        if(exams != null && exams.size() > 0 && students != null && students.size() > 0){
+            for (Exam exam : exams) {
+                dates.add(exam.getExamTime());
+                double sum = 0;
+
+                for (Student student : students) {
+                    QueryWrapper<Score> scoreQueryWrapper = new QueryWrapper<>();
+                    scoreQueryWrapper.eq("student_id",student.getId());
+                    scoreQueryWrapper.eq("exam_id",exam.getId());
+                    Score score = scoreMapper.selectOne(scoreQueryWrapper); //每一个学生的成绩
+
+                    sum += score.getScore();
+                }
+
+                scores.add(sum / students.size());
+            }
+        }
+
+        ComparisonVo comparisonVo = new ComparisonVo();
+        comparisonVo.setDates(dates);
+        comparisonVo.setScores(scores);
+
+        return new Result(ResultCode.SUCCESS,comparisonVo);
+
     }
 }

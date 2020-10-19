@@ -82,7 +82,7 @@ public class RoleService extends BaseService {
         target.setModifyId(currentUser().getId());
 
 
-        //处理role和permission中间表关系数据
+        //处理role和permission中间表关系gb数据
         String permissionIds = role.getPermissionIds();
 
         Set<Permission> permissions = new HashSet<>();

@@ -3,15 +3,18 @@ package com.access.business.quality.student.service;
 import com.access.business.academic.exam.mapper.ExamMapper;
 import com.access.business.access.repository.RoleRepository;
 import com.access.business.access.repository.UserRepository;
+import com.access.business.quality.credit.mapper.CreditMapper;
 import com.access.business.quality.student.mapper.StudentMapper;
 import com.access.business.quality.transact.mapper.ClassesMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.teach.base.BaseService;
 import com.teach.entity.academic.exam.Exam;
 import com.teach.entity.access.Role;
 import com.teach.entity.access.User;
+import com.teach.entity.quality.credit.Credits;
 import com.teach.entity.quality.student.Student;
 import com.teach.entity.quality.transact.Classes;
 import com.teach.entity.vo.UserStudentVo;
@@ -52,6 +55,9 @@ public class StudentService extends BaseService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private CreditMapper creditMapper;
+
+    @Autowired
     private ExamMapper examMapper;
 
     @Autowired
@@ -60,7 +66,7 @@ public class StudentService extends BaseService {
     public Result list(Map<String, Object> map) {
 
         //防止用户不选择班级,直接通过输入学生姓名进行查询
-        if(map.get("classesId") == null) return Result.FAIL();
+        if (map.get("classesId") == null) return Result.FAIL();
 
         Integer page = Integer.parseInt(map.get("page").toString());
         Integer size = Integer.parseInt(map.get("size").toString());
@@ -68,13 +74,12 @@ public class StudentService extends BaseService {
         String classesId = map.get("classesId").toString();
 
 
-
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("classes_id",classesId);
+        queryWrapper.eq("classes_id", classesId);
 
         Object nickName = map.get("nickName");
 
-        IPage<Student> iPage = new Page<>(page,size);
+        IPage<Student> iPage = new Page<>(page, size);
 
 
         IPage<Student> result = studentMapper.selectPage(iPage, queryWrapper);
@@ -84,7 +89,7 @@ public class StudentService extends BaseService {
 
         List<UserStudentVo> vos = new ArrayList<>();
 
-        if(students != null && students.size() > 0){
+        if (students != null && students.size() > 0) {
             for (Student student : students) {
                 String id = student.getId();
 
@@ -92,28 +97,27 @@ public class StudentService extends BaseService {
 
                 UserStudentVo vo = new UserStudentVo();
 
-                BeanUtils.copyProperties(student,vo);
-                BeanUtils.copyProperties(user,vo);
+                BeanUtils.copyProperties(student, vo);
+                BeanUtils.copyProperties(user, vo);
                 vos.add(vo);
             }
         }
 
-        if(nickName != null){
+        if (nickName != null) {
             List<UserStudentVo> list = new ArrayList<>();
             for (UserStudentVo vo : vos) {
-                if(vo.getNickName().contains(nickName.toString())){
+                if (vo.getNickName().contains(nickName.toString())) {
                     list.add(vo);
                 }
             }
 
-            PageResult<UserStudentVo> pageResult = new PageResult<>(total,list);
-            return new Result(ResultCode.SUCCESS,pageResult);
+            PageResult<UserStudentVo> pageResult = new PageResult<>(total, list);
+            return new Result(ResultCode.SUCCESS, pageResult);
         }
 
 
-        PageResult<UserStudentVo> pageResult = new PageResult<>(total,vos);
-        return new Result(ResultCode.SUCCESS,pageResult);
-
+        PageResult<UserStudentVo> pageResult = new PageResult<>(total, vos);
+        return new Result(ResultCode.SUCCESS, pageResult);
 
 
     }
@@ -123,13 +127,13 @@ public class StudentService extends BaseService {
         String classesId = vo.getClassesId();
         //通过班级id查询班级所有的试卷
         QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("classes_id",classesId);
+        queryWrapper.eq("classes_id", classesId);
         List<Exam> exams = examMapper.selectList(queryWrapper);
 
-        if(exams != null && exams.size() > 0){
+        if (exams != null && exams.size() > 0) {
             for (Exam exam : exams) {
                 String examStatus = exam.getExamStatus();
-                if(!"4".equals(examStatus)){
+                if (!"4".equals(examStatus)) {
                     throw new CommonException(ResultCode.INSERT_STUDENT_ERROR_IS_CLASSES_HAS_EXAMS_ING);
                 }
             }
@@ -138,17 +142,17 @@ public class StudentService extends BaseService {
         User user = new User();
         Student student = new Student();
 
-        BeanUtils.copyProperties(vo,user);
-        BeanUtils.copyProperties(vo,student);
+        BeanUtils.copyProperties(vo, user);
+        BeanUtils.copyProperties(vo, student);
 
         String id = idWorker.nextId() + "";
         user.setId(id);
-        String username = PinYinUtil.toPinyin(user.getNickName()) + (int)(Math.random()*8999);
+        String username = PinYinUtil.toPinyin(user.getNickName()) + (int) (Math.random() * 8999);
         user.setUsername(username);
         user.setLevel("user");
 
         user.setStatus("1");
-        user.setPassword(new Md5Hash("123456",username,3).toString()); //参数一: 加密谁?   混淆字符串1234 : 加盐  3 加密次数
+        user.setPassword(new Md5Hash("123456", username, 3).toString()); //参数一: 加密谁?   混淆字符串1234 : 加盐  3 加密次数
 
 
         //处理用户与角色的关联关系
@@ -158,7 +162,7 @@ public class StudentService extends BaseService {
             roles.add(role);
         }
 
-        if(roles != null && roles.size() > 0){
+        if (roles != null && roles.size() > 0) {
             user.setRoles(roles);
             userRepository.save(user);
 
@@ -173,7 +177,7 @@ public class StudentService extends BaseService {
             studentMapper.insert(student);
 
             return Result.SUCCESS();
-        }else{
+        } else {
             return Result.FAIL();
         }
 
@@ -183,25 +187,24 @@ public class StudentService extends BaseService {
 
         User user = new User();
         Student student = new Student();
-        BeanUtils.copyProperties(vo,user);
-        BeanUtils.copyProperties(vo,student);
+        BeanUtils.copyProperties(vo, user);
+        BeanUtils.copyProperties(vo, student);
 
         //查看当前修改的班级是否有未结束的试卷,如果有,则不让添加
         String newClassesId = vo.getClassesId();
 
         QueryWrapper<Exam> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("classes_id",newClassesId);
+        queryWrapper.eq("classes_id", newClassesId);
         List<Exam> exams = examMapper.selectList(queryWrapper);
 
-        if(exams != null && exams.size() > 0){
+        if (exams != null && exams.size() > 0) {
             for (Exam exam : exams) {
                 String examStatus = exam.getExamStatus();
-                if(!"4".equals(examStatus)){
+                if (!"4".equals(examStatus)) {
                     throw new CommonException(ResultCode.INSERT_STUDENT_ERROR_IS_CLASSES_HAS_EXAMS_ING);
                 }
             }
         }
-
 
 
         Student studentTarget = studentMapper.selectById(user.getId());
@@ -211,11 +214,8 @@ public class StudentService extends BaseService {
         String classesId = student.getClassesId();
 
 
-
-
-
-        BeanUtils.copyProperties(student,studentTarget);
-        BeanUtils.copyProperties(user,userTarget);
+        BeanUtils.copyProperties(student, studentTarget);
+        BeanUtils.copyProperties(user, userTarget);
 
         Classes classes = classesMapper.selectById(classesId);
         String classesName = classes.getClassesName();
@@ -228,7 +228,7 @@ public class StudentService extends BaseService {
             roles.add(role);
         }
 
-        if(roles != null && roles.size() > 0){
+        if (roles != null && roles.size() > 0) {
             userTarget.setRoles(roles);
             userTarget.setModifyId(currentUser().getId());
             userTarget.setModifyUser(currentUser().getNickName());
@@ -236,9 +236,88 @@ public class StudentService extends BaseService {
             userRepository.save(userTarget);
             studentMapper.updateById(studentTarget);
             return Result.SUCCESS();
-        }else {
+        } else {
             return Result.FAIL();
         }
 
+    }
+
+
+    public Result getStudentListByClassesId(Map<String, Object> map) {
+        String id = map.get("id").toString();
+
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("classes_id", id);
+
+        List<Student> students = studentMapper.selectList(queryWrapper);
+
+        List<UserStudentVo> vos = new ArrayList<>();
+
+        if (students != null && students.size() > 0) {
+            for (Student student : students) {
+                String id1 = student.getId();
+
+                User user = userRepository.findById(id1).get();
+
+                UserStudentVo vo = new UserStudentVo();
+
+                BeanUtils.copyProperties(student, vo);
+                BeanUtils.copyProperties(user, vo);
+                vos.add(vo);
+            }
+        }
+        return new Result(ResultCode.SUCCESS, vos);
+    }
+
+    public Result getStudent(Map<String, Object> map) {
+        String id = map.get("id").toString();
+
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("classes_id", id);
+
+        List<Student> students = studentMapper.selectList(queryWrapper);
+
+        List<UserStudentVo> vos = new ArrayList<>();
+
+        if (students != null && students.size() > 0) {
+            for (Student student : students) {
+                String id1 = student.getId();
+
+                User user = userRepository.findById(id1).get();
+
+                UserStudentVo vo = new UserStudentVo();
+
+                QueryWrapper<Credits> queryWrapper1 = new QueryWrapper<>();
+                queryWrapper1.eq("student_id", id1);
+
+                List<Credits> credits = creditMapper.selectList(queryWrapper1);
+
+                Integer creditPlus = 0;
+                Integer creditLess = 0;
+                Integer creditTotal = 100;
+
+                if (credits != null && credits.size() > 0) {
+                    for (Credits credit : credits) {
+                        if ("1".equals(credit.getMark())) {
+                            creditLess = creditLess + Integer.parseInt(credit.getFraction());
+                            vo.setCreditLess(creditLess);
+                            vo.setCreditPlus(vo.getCreditPlus() == null ? 0 : vo.getCreditPlus());
+                            vo.setCreditTotal(creditTotal + vo.getCreditPlus() - vo.getCreditLess());
+                        } else {
+                            creditPlus = creditPlus + Integer.parseInt(credit.getFraction());
+                            vo.setCreditLess(vo.getCreditLess() == null ? 0 : vo.getCreditLess());
+                            vo.setCreditPlus(creditPlus);
+                            vo.setCreditTotal(creditTotal + vo.getCreditPlus() - vo.getCreditLess());
+                        }
+                    }
+                }
+
+                BeanUtils.copyProperties(student, vo);
+                BeanUtils.copyProperties(user, vo);
+                vos.add(vo);
+            }
+        }
+
+        return new Result(ResultCode.SUCCESS, vos);
     }
 }

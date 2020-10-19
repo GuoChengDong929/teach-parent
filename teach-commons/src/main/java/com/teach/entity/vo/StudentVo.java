@@ -19,4 +19,5 @@ public class StudentVo implements Serializable {
     private String nickName;
     private List<Integer>scores;
     private Double avg;
+
 }

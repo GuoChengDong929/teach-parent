@@ -2,7 +2,6 @@ package com.access;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.teach.utils.IdWorker;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,7 +40,6 @@ public class MyAccessApplication {
     public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
         return new OpenEntityManagerInViewFilter();
     }
-
 
     @Bean
     public PaginationInterceptor paginationInterceptor(){

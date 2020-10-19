@@ -2,6 +2,7 @@ package com.access.business.quality.transact.controller;
 
 import com.access.business.quality.transact.service.ClassesService;
 import com.teach.aop.Log;
+import com.teach.entity.quality.interview.Interview;
 import com.teach.entity.quality.transact.Classes;
 import com.teach.response.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -51,5 +52,10 @@ public class ClassesController {
     @RequestMapping(value = "/invalid",method = RequestMethod.PUT)
     public Result invalid(@RequestBody Map<String,Object> map){
         return classesService.invalid(map);
+    }
+
+    @RequestMapping(value = "/getClassesListById",method = RequestMethod.GET)
+    public Result getClassesListById(){
+        return classesService.getClassesListById();
     }
 }
